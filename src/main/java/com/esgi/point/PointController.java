@@ -27,7 +27,7 @@ public class PointController {
 	}
 
 	@GetMapping
-	public List<PointDto> gePointOfCercle(@RequestParam("cercle") Long id) {
+	public List<PointDto> gePointOfCercle(@RequestParam("cercle") Long id) throws CercleNotFoundException{
 		return pointService.getPointInCercle(id);
 	}
 

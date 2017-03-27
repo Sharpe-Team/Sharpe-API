@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.fail;
 import static org.mockito.Mockito.when;
 
 /**
@@ -75,10 +76,31 @@ public class PointServiceTest {
     }
 
     @Test
-    public void should_return_all_point_of_topic_one() {
-        List<PointDto> allPoints = pointService.getPointInCercle(1L);
+    public void should_return_all_point_of_cercle_one() {
+        List<PointDto> allPoints = null;
+
+        Long idCercle = 1L;
+
+        try {
+            allPoints = pointService.getPointInCercle(idCercle);
+        } catch (CercleNotFoundException e) {
+            fail("Test failed : an unexpected exception has been thrown when trying to access cercle with id = " + idCercle);
+        }
 
         assertThat(allPoints).hasSize(5);
+    }
+
+    @Test
+    public void should_throw_CircleNotFoundException_with_unknown_id() {
+
+        Long idCercle = 62L;
+
+        try {
+            pointService.getPointInCercle(idCercle);
+
+            fail("Test failed : an exception should have been thrown when trying to acceszs cercle with id = " + idCercle);
+        } catch (CercleNotFoundException e) {
+        }
     }
 
     @Test

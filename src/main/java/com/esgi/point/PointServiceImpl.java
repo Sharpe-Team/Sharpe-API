@@ -23,11 +23,16 @@ public class PointServiceImpl implements PointService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<PointDto> getPointInCercle(Long cercle) throws PointException {
-        return pointRepository.findByCercle(cercle)
+    public List<PointDto> getPointInCercle(Long cercle) throws CercleNotFoundException {
+        List<PointDto> pointDtoList = pointRepository.findByCercle(cercle)
                 .stream()
                 .map(PointAdapter::convertToDto)
                 .collect(Collectors.toList());
+
+        if (pointDtoList.size() == 0)
+            throw new CercleNotFoundException();
+
+        return pointDtoList;
     }
 
     @Override
