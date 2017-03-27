@@ -20,33 +20,33 @@ public class PointAdapterTest {
     public void should_return_an_point_entity() {
         PointDto pointDto = PointDto.builder()
                 .id(1L)
-                .cercle(2L)
-                .username("first")
-                .point("message")
+                .idLine(2L)
+                .idUser(8L)
+                .content("message")
                 .build();
 
         PointEntity pointEntity = pointAdapter.convertToEntity(pointDto);
 
-        assertThat(pointEntity.getUsername()).isEqualTo("first");
         assertThat(pointEntity.getId()).isEqualTo(1L);
-        assertThat(pointEntity.getCercle()).isEqualTo(2L);
-        assertThat(pointEntity.getPoint()).isEqualTo("message");
+        assertThat(pointEntity.getIdLine()).isEqualTo(2L);
+        assertThat(pointEntity.getIdUser()).isEqualTo(8L);
+        assertThat(pointEntity.getContent()).isEqualTo("message");
     }
 
     @Test
     public void should_return_an_point_dto() {
         PointEntity pointEntity = PointEntity.builder()
                 .id(1L)
-                .cercle(2L)
-                .username("first")
-                .point("message")
+                .idLine(2L)
+                .idUser(8L)
+                .content("message")
                 .build();
 
         PointDto pointDto = pointAdapter.convertToDto(pointEntity);
 
         assertThat(pointDto.getId()).isEqualTo(1L);
-        assertThat(pointDto.getCercle()).isEqualTo(2L);
-        assertThat(pointDto.getUsername()).isEqualTo("first");
-        assertThat(pointDto.getPoint()).isEqualTo("message");
+        assertThat(pointDto.getIdLine()).isEqualTo(2L);
+        assertThat(pointDto.getIdUser()).isEqualTo(8L);
+        assertThat(pointDto.getContent()).isEqualTo("message");
     }
 }

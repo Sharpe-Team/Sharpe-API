@@ -13,7 +13,7 @@ public interface PointRepository extends CrudRepository<PointEntity, Long> {
 
 	List<PointEntity> findAll();
 
-	List<PointEntity> findByCercle(Long cercle);
+	List<PointEntity> findByIdLine(Long cercle);
 
 	void delete(Long idPoint);
 }

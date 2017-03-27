@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class PointDto {
 
     private Long id;
-    private Long cercle;
-    private String username;
-    private String point;
+    private Long idLine;
+    private Long idUser;
+    private String content;
 }

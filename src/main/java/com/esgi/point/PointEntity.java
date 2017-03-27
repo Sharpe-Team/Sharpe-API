@@ -25,17 +25,16 @@ public class PointEntity {
     @GeneratedValue
     private Long id;
 
-    @Column
-    private Long cercle;
+    @Column(name = "idline")
+    private Long idLine;
 
-    @Column
+    @Column(name = "iduser")
     @NotNull
-    @NotEmpty
-    private String username;
+    private Long idUser;
 
     @Column
     @NotNull
     @NotEmpty
     @Length(min = 1)
-    private String point;
+    private String content;
 }

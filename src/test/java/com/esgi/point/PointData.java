@@ -12,6 +12,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 
 @Retention(RUNTIME)
 @Target(TYPE)
+
 @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:point-init.sql")
 @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:point-cleanup.sql")
 public @interface PointData {
