@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +25,6 @@ public class PointServiceTest {
 
     @Mock
     PointRepository pointRepository;
-
-    @Mock
-    HttpSession httpSession;
 
     private PointEntity point1;
     private PointEntity point2;
@@ -76,30 +72,29 @@ public class PointServiceTest {
         pointEntities.add(point5);
 
         when(pointRepository.findByCercle(1L)).thenReturn(pointEntities);
-        when(httpSession.getAttribute("username")).thenReturn("myUsername");
     }
 
     @Test
     public void should_return_all_point_of_topic_one() {
-        List<PointDto> allPoints = pointService.getPointForCercle(1L);
+        List<PointDto> allPoints = pointService.getPointInCercle(1L);
 
         assertThat(allPoints).hasSize(5);
     }
 
     @Test
     public void should_insert_one_point() {
-        PointDto pointDto = PointDto.builder()
+        PointEntity pointEntity = PointEntity.builder()
                 .id(6L)
                 .cercle(1L)
+                .username("myUsername")
                 .point("my message")
                 .build();
 
-        PointDto pointDto2 = pointService.insertMessage(pointDto);
+        PointDto pointDto2 = pointService.insertPoint(pointEntity);
 
         assertThat(pointDto2.getId()).isEqualTo(6L);
         assertThat(pointDto2.getCercle()).isEqualTo(1);
         assertThat(pointDto2.getUsername()).isEqualTo("myUsername");
         assertThat(pointDto2.getPoint()).isEqualTo("my message");
-
     }
 }

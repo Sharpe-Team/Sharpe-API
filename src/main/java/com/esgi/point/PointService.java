@@ -10,14 +10,11 @@ import java.util.List;
 public interface PointService {
 
     @Transactional(readOnly = true)
-    List<PointDto> getAllMessages();
+    List<PointDto> getPointInCercle(Long idTopic) throws PointException;
+
+    @Transactional
+    PointDto insertPoint(PointEntity pointEntity);
 
     @Transactional(readOnly = true)
-    List<PointDto> getPointForCercle(Long idTopic) throws PointException;
-
-    @Transactional(readOnly = true)
-    PointDto insertMessage(PointDto PointDto);
-
-    @Transactional(readOnly = true)
-    void deleteMessage(Long idPoint);
+    void deletePoint(Long idPoint);
 }

@@ -16,7 +16,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@MessageData
+@PointData
 //@AutoConfigureTestDatabase(connection = H2)
 @ActiveProfiles("test")
 public class PointRepositoryTest {

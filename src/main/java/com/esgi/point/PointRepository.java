@@ -15,7 +15,5 @@ public interface PointRepository extends CrudRepository<PointEntity, Long> {
 
 	List<PointEntity> findByCercle(Long cercle);
 
-	PointEntity save(PointEntity PointEntity);
-
 	void delete(Long idPoint);
 }

@@ -1,0 +1,105 @@
+package com.esgi.point;
+
+import com.jayway.restassured.RestAssured;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import static com.jayway.restassured.RestAssured.given;
+import static com.jayway.restassured.RestAssured.when;
+import static com.jayway.restassured.http.ContentType.JSON;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+
+/**
+ * Created by rfruitet on 13/03/2017.
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@PointData
+@ActiveProfiles("test")
+public class PointControllerIT {
+
+	@LocalServerPort
+	private int localServerPort;
+
+	@Before
+	public void init() {
+		RestAssured.port = localServerPort;
+	}
+
+	@Test
+	public void should_get_all_points_of_topic_one() {
+
+		when()
+				.get("/points?cercle={cercle}", 1L)
+		.then()
+				.log().all()
+				.statusCode(200)
+				.body("$", hasSize(3));
+	}
+
+	@Test
+	public void should_insert_one_point_in_cercle() {
+		 PointEntity pointEntity = PointEntity.builder()
+				.id(1L)
+				.cercle(2L)
+				.username("myUsername")
+				.point("My message")
+				.build();
+
+		given()
+				.contentType(JSON)
+				.body(pointEntity)
+		.when()
+				.post("/points")
+		.then()
+				.log()
+				.all()
+				.statusCode(201);
+	}
+
+	@Test
+	public void should_throw_PointValidationException_for_empty_username() {
+		PointEntity pointEntity = PointEntity.builder()
+				.id(1L)
+				.cercle(2L)
+				.username("")
+				.point("my message")
+				.build();
+
+		given()
+				.contentType(JSON)
+				.body(pointEntity)
+		.when()
+				.post("/points")
+		.then()
+				.log()
+				.all()
+				.statusCode(400);
+	}
+
+	@Test
+	public void should_throw_PointValidationException_for_empty_point() {
+		PointEntity pointEntity = PointEntity.builder()
+				.id(1L)
+				.cercle(2L)
+				.username("myUsername")
+				.point("")
+				.build();
+
+		given()
+				.contentType(JSON)
+				.body(pointEntity)
+				.when()
+				.post("/points")
+				.then()
+				.log()
+				.all()
+				.statusCode(400);
+	}
+}
