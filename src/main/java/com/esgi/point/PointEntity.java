@@ -1,4 +1,4 @@
-package com.esgi.message;
+package com.esgi.point;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,15 +18,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "message")
-public class MessageEntity {
+@Table(name = "point")
+public class PointEntity {
 
     @Id
     @GeneratedValue
     private Long id;
 
     @Column
-    private Long topic;
+    private Long cercle;
 
     @Column
     @NotNull
@@ -37,5 +37,5 @@ public class MessageEntity {
     @NotNull
     @NotEmpty
     @Length(min = 1)
-    private String message;
+    private String point;
 }

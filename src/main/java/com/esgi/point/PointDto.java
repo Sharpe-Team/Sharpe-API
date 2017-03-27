@@ -1,4 +1,4 @@
-package com.esgi.message;
+package com.esgi.point;
 
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +9,10 @@ import lombok.Data;
 
 @Builder
 @Data
-public class MessageDto {
+public class PointDto {
 
     private Long id;
-    private Long topic;
+    private Long cercle;
     private String username;
-    private String message;
+    private String point;
 }

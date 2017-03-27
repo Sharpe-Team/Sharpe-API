@@ -1,0 +1,10 @@
+insert into point (id, cercle, username, point) values (1, 1, 'first', 'message1');
+insert into point (id, cercle, username, point) values (2, 1, 'second', 'message2');
+insert into point (id, cercle, username, point) values (3, 1, 'third', 'message3');
+insert into point (id, cercle, username, point) values (4, 2, 'fourth', 'message4');
+insert into point (id, cercle, username, point) values (5, 2, 'fifth', 'message5');
+insert into point (id, cercle, username, point) values (6, 2, 'sixth', 'message6');
+insert into point (id, cercle, username, point) values (7, 3, 'seventh', 'message7');
+insert into point (id, cercle, username, point) values (8, 3, 'eighth', 'message8');
+insert into point (id, cercle, username, point) values (9, 3, 'ninth', 'message9');
+insert into point (id, cercle, username, point) values (10, 3, 'tenth', 'message10');

@@ -1,4 +1,4 @@
-package com.esgi.message;
+package com.esgi.point;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,17 +7,17 @@ import java.util.List;
 /**
  * Created by rfruitet on 08/03/2017.
  */
-public interface MessageService {
+public interface PointService {
 
     @Transactional(readOnly = true)
-    List<MessageDto> getAllMessages();
+    List<PointDto> getAllMessages();
 
     @Transactional(readOnly = true)
-    List<MessageDto> getMessageForTopic(Long idTopic) throws MessageException;
+    List<PointDto> getPointForCercle(Long idTopic) throws PointException;
 
     @Transactional(readOnly = true)
-    MessageDto insertMessage(MessageDto messageDto);
+    PointDto insertMessage(PointDto PointDto);
 
     @Transactional(readOnly = true)
-    void deleteMessage(Long idMessage);
+    void deleteMessage(Long idPoint);
 }
