@@ -15,6 +15,8 @@ public class PointAdapter {
                 .idLine(pointEntity.getIdLine())
                 .idUser(pointEntity.getIdUser())
                 .content(pointEntity.getContent())
+                .created(pointEntity.getCreated())
+                .updated(pointEntity.getUpdated())
                 .build();
     }
 
@@ -24,6 +26,8 @@ public class PointAdapter {
                 .idLine(pointDto.getIdLine())
                 .idUser(pointDto.getIdUser())
                 .content(pointDto.getContent())
+                .created(pointDto.getCreated())
+                .updated(pointDto.getUpdated())
                 .build();
     }
 }

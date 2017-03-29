@@ -13,7 +13,10 @@ public interface PointRepository extends CrudRepository<PointEntity, Long> {
 
 	List<PointEntity> findAll();
 
-	List<PointEntity> findByIdLine(Long cercle);
+	// TODO: 29/03/2017 Retoruner les messages par ordre décroissant et ajouter une limite
+	List<PointEntity> findByIdLine(Long idLine);
+
+	List<PointEntity> findTop2ByIdLineOrderByCreatedDesc(Long idLine);
 
 	void delete(Long idPoint);
 }

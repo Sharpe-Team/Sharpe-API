@@ -17,7 +17,6 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @PointData
-//@AutoConfigureTestDatabase(connection = H2)
 @ActiveProfiles("test")
 public class PointRepositoryTest {
 
@@ -38,18 +37,21 @@ public class PointRepositoryTest {
 
 	@Test
 	public void should_insert_new_point() {
-		PointEntity pointEntity = PointEntity.builder().id(11L)
+		PointEntity entityToinsert = PointEntity.builder()
+				.id(11L)
 				.idLine(6L)
 				.idUser(8L)
 				.content("message11")
 				.build();
 
-		PointEntity entity = pointRepository.save(pointEntity);
+		PointEntity entity = pointRepository.save(entityToinsert);
 
-		assertThat(entity.getId()).isEqualTo(11);
-		assertThat(entity.getIdLine()).isEqualTo(6);
-		assertThat(entity.getIdUser()).isEqualTo(8L);
-		assertThat(entity.getContent()).isEqualTo("message11");
+		System.out.println(">>>>>>>>>>>" + entity.getCreated());
+
+		assertThat(entity.getId()).isEqualTo(entityToinsert.getId());
+		assertThat(entity.getIdLine()).isEqualTo(entityToinsert.getIdLine());
+		assertThat(entity.getIdUser()).isEqualTo(entityToinsert.getIdUser());
+		assertThat(entity.getContent()).isEqualTo(entityToinsert.getContent());
 	}
 
 	@Test

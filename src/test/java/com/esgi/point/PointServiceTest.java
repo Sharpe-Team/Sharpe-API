@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -73,50 +74,47 @@ public class PointServiceTest {
         pointEntities.add(point5);
 
         when(pointRepository.findByIdLine(1L)).thenReturn(pointEntities);
+        when(pointRepository.save(any(PointEntity.class))).thenReturn(point5);
     }
 
     @Test
-    public void should_return_all_point_of_cercle_one() {
+    public void should_return_all_point_of_line_one() {
         List<PointDto> allPoints = null;
 
-        Long idCercle = 1L;
+        Long idLine = 1L;
 
         try {
-            allPoints = pointService.getPointInCercle(idCercle);
-        } catch (CercleNotFoundException e) {
-            fail("Test failed : an unexpected exception has been thrown when trying to access cercle with id = " + idCercle);
+            allPoints = pointService.getPointInLine(idLine);
+        } catch (LineNotFoundException e) {
+            fail("Test failed : an unexpected exception has been thrown when trying to access cercle with id = " + idLine);
         }
 
         assertThat(allPoints).hasSize(5);
     }
 
     @Test
-    public void should_throw_CircleNotFoundException_with_unknown_id() {
+    public void should_throw_LineNotFoundException_with_unknown_idline() {
 
-        Long idCercle = 62L;
+        Long idLineUnknown = 62L;
 
         try {
-            pointService.getPointInCercle(idCercle);
+            pointService.getPointInLine(idLineUnknown);
 
-            fail("Test failed : an exception should have been thrown when trying to acceszs cercle with id = " + idCercle);
-        } catch (CercleNotFoundException e) {
+            fail("Test failed : an exception should have been thrown when trying to acceszs cercle with id = " + idLineUnknown);
+        } catch (LineNotFoundException e) {
         }
     }
 
     @Test
     public void should_insert_one_point() {
-        PointEntity pointEntity = PointEntity.builder()
-                .id(6L)
+        PointDto pointDtoWithoutId = PointDto.builder()
                 .idLine(1L)
                 .idUser(8L)
                 .content("my message")
                 .build();
 
-        PointDto pointDto2 = pointService.insertPoint(pointEntity);
+        PointDto pointDto = pointService.insertPoint(pointDtoWithoutId);
 
-        assertThat(pointDto2.getId()).isEqualTo(6L);
-        assertThat(pointDto2.getIdLine()).isEqualTo(1);
-        assertThat(pointDto2.getIdUser()).isEqualTo(8L);
-        assertThat(pointDto2.getContent()).isEqualTo("my message");
+        assertThat(pointDto.getId()).isEqualTo(5L);
     }
 }

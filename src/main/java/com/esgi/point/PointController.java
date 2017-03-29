@@ -1,7 +1,6 @@
 package com.esgi.point;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,13 +9,9 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
-/**
- * Created by thomasfouan on 04/03/2017.
- */
 @RestController
 @RequestMapping("/points")
 @CrossOrigin
-@Transactional
 public class PointController {
 
 	private PointService pointService;
@@ -27,20 +22,19 @@ public class PointController {
 	}
 
 	@GetMapping
-	public List<PointDto> gePointOfCercle(@RequestParam("cercle") Long id) throws CercleNotFoundException{
-		return pointService.getPointInCercle(id);
+	public List<PointDto> getPointsOfCercle(@RequestParam("line") Long id) throws LineNotFoundException{
+		List<PointDto> pointInLine = pointService.getPointInLine(id);
+		return pointInLine;
 	}
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public PointDto insertPointIntoCercle(@Valid @RequestBody PointEntity pointEntity,
+	public PointDto insertPointIntoCercle(@Valid @RequestBody PointDto pointDto,
 										  BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
+		if(bindingResult.hasErrors())
 			throw new PointValidationException();
-		}
 
-		PointDto pointDto = pointService.insertPoint(pointEntity);
-
-		return pointDto;
+		PointDto dto = pointService.insertPoint(pointDto);
+		return dto;
 	}
 }

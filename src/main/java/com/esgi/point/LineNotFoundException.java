@@ -8,5 +8,5 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  * Created by rfruitet on 14/03/2017.
  */
 @ResponseStatus(NOT_FOUND)
-public class CercleNotFoundException extends Exception {
+public class LineNotFoundException extends Exception {
 }

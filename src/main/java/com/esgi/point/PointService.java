@@ -10,10 +10,10 @@ import java.util.List;
 public interface PointService {
 
     @Transactional(readOnly = true)
-    List<PointDto> getPointInCercle(Long idCercle) throws CercleNotFoundException;
+    List<PointDto> getPointInLine(Long idLine) throws LineNotFoundException;
 
     @Transactional
-    PointDto insertPoint(PointEntity pointEntity);
+    PointDto insertPoint(PointDto pointDto);
 
     @Transactional(readOnly = true)
     void deletePoint(Long idPoint);

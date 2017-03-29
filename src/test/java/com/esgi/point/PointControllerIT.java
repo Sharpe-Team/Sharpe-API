@@ -2,13 +2,14 @@ package com.esgi.point;
 
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Date;
 
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.when;
@@ -35,9 +36,8 @@ public class PointControllerIT {
 
 	@Test
 	public void should_get_all_points_of_topic_one() {
-
 		when()
-				.get("/points?cercle={cercle}", 1L)
+				.get("/points?line={line}", 1L)
 		.then()
 				.log().all()
 				.statusCode(200)
@@ -46,16 +46,20 @@ public class PointControllerIT {
 
 	@Test
 	public void should_insert_one_point_in_cercle() {
-		 PointEntity pointEntity = PointEntity.builder()
+		Date date = new Date();
+
+		PointDto pointDto = PointDto.builder()
 				.id(1L)
 				.idLine(2L)
 				.idUser(8L)
 				.content("My message")
+				.created(date)
+				.updated(date)
 				.build();
 
 		given()
 				.contentType(JSON)
-				.body(pointEntity)
+				.body(pointDto)
 		.when()
 				.post("/points")
 		.then()
@@ -65,18 +69,20 @@ public class PointControllerIT {
 	}
 
 	@Test
-	@Ignore
-	public void should_throw_PointValidationException_for_empty_username() {
-		PointEntity pointEntity = PointEntity.builder()
+	public void should_throw_PointValidationException_for_empty_iduser() {
+		Date date = new Date();
+
+		PointDto pointDto = PointDto.builder()
 				.id(1L)
 				.idLine(2L)
-				.idUser(8L)
 				.content("my message")
+				.created(date)
+				.updated(date)
 				.build();
 
 		given()
 				.contentType(JSON)
-				.body(pointEntity)
+				.body(pointDto)
 		.when()
 				.post("/points")
 		.then()
@@ -87,19 +93,23 @@ public class PointControllerIT {
 
 	@Test
 	public void should_throw_PointValidationException_for_empty_content() {
-		PointEntity pointEntity = PointEntity.builder()
+		Date date = new Date();
+
+		PointDto pointDto = PointDto.builder()
 				.id(1L)
 				.idLine(2L)
 				.idUser(8L)
 				.content("")
+				.created(date)
+				.updated(date)
 				.build();
 
 		given()
 				.contentType(JSON)
-				.body(pointEntity)
-				.when()
+				.body(pointDto)
+		.when()
 				.post("/points")
-				.then()
+		.then()
 				.log()
 				.all()
 				.statusCode(400);
