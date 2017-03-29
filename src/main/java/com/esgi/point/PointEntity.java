@@ -1,9 +1,6 @@
 package com.esgi.point;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -18,6 +15,8 @@ import java.util.Date;
  * Created by rfruitet on 07/03/2017.
  */
 @Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -52,28 +51,4 @@ public class PointEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date updated;
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public Long getIdLine() {
-        return this.idLine;
-    }
-
-    public Long getIdUser() {
-        return this.idUser;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-    public Date getCreated() {
-        return this.created;
-    }
-
-    public Date getUpdated() {
-        return this.updated;
-    }
 }
