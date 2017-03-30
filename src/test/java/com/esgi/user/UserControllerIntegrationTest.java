@@ -1,7 +1,6 @@
 package com.esgi.user;
 
 import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.http.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +8,8 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Date;
 
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.when;
@@ -35,7 +36,7 @@ public class UserControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldGetAllUsers() {
+	public void should_get_all_users() {
 		when()
 				.get("/users")
 		.then()
@@ -44,18 +45,18 @@ public class UserControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldGetFirstUser() {
+	public void should_get_first_user() {
 		when()
 				.get("/users/{user_id}", 1)
 		.then()
 				.statusCode(200)
 				.body("id", is(1))
-				.body("username", is("first"))
+				.body("firstname", is("first"))
 				.body("password", is("password1"));
 	}
 
 	@Test
-	public void shouldNotFoundUnknownUser() {
+	public void should_not_found_unknown_user() {
 		when()
 				.get("/users/{user_id}", 4)
 		.then()
@@ -63,29 +64,36 @@ public class UserControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldGetSecondUserByUsername() {
+	public void should_get_second_user_by_username() {
 		when()
-				.get("/users?username={username}", "second")
+				.get("/users?firstname={firstname}", "second")
 		.then()
 				.statusCode(200)
 				.body("id", is(2))
-				.body("username", is("second"))
-				.body("password", is("password1"));
+				.body("firstname", is("second"))
+				.body("password", is("password2"));
 	}
 
 	@Test
-	public void shouldNotFoundUnknownUserByUsername() {
+	public void should_not_found_unknown_user_by_username() {
 		when()
-				.get("/users?username={username}", "fourth")
+				.get("/users?firstname={firstname}", "fourth")
 		.then()
 				.statusCode(404);
 	}
 
 	@Test
-	public void shouldInsertUser() {
+	public void should_insert_user() {
+		Date date = new Date();
+
 		UserEntity user = UserEntity.builder()
-				.username("fourth")
+				.firstname("fourth")
+				.lastname("lastname4")
+				.email("fourth@email.com")
 				.password("password4")
+				.profilePicture("url/picture4.png")
+				.created(date)
+				.updated(date)
 				.build();
 
 		given()
@@ -98,10 +106,16 @@ public class UserControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldThrowUserValidationExceptionForEmptyUsername() {
+	public void should_throw_UserValidationException_for_empty_username() {
+		Date date = new Date();
+
 		UserEntity user = UserEntity.builder()
-				.username("")
+				.firstname("")
+				.lastname("lastname4")
+				.email("fourth@email.com")
 				.password("password4")
+				.profilePicture("url/picture4.png")
+				.created(date).updated(date)
 				.build();
 
 		given()
@@ -114,10 +128,16 @@ public class UserControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldThrowUserValidationExceptionForEmptyPassword() {
+	public void should_throw_UserValidationException_for_empty_password() {
+		Date date = new Date();
 		UserEntity user = UserEntity.builder()
-				.username("fourth")
+				.firstname("fourth")
+				.lastname("lastname4")
+				.email("fourth@email.com")
 				.password("")
+				.profilePicture("url/picture4.png")
+				.created(date)
+				.updated(date)
 				.build();
 
 		given()
@@ -130,10 +150,17 @@ public class UserControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldThrowUserValidationExceptionForShortPassword() {
+	public void should_throw_UserValidationException_for_short_password() {
+		Date date = new Date();
+
 		UserEntity user = UserEntity.builder()
-				.username("fourth")
+				.firstname("fourth")
+				.lastname("lastname4")
+				.email("fourth@email.com")
 				.password("short")
+				.profilePicture("url/picture4.png")
+				.created(date)
+				.updated(date)
 				.build();
 
 		given()

@@ -9,14 +9,14 @@ import java.util.List;
  */
 public interface UserService {
 	@Transactional(readOnly = true)
-	List<UserEntity> getAllUsers();
+	List<UserDto> getAllUsers();
 
 	@Transactional(readOnly = true)
-	UserEntity getUser(Long id) throws UserNotFoundException;
+	UserDto getUser(Long id) throws UserNotFoundException;
 
 	@Transactional(readOnly = true)
-	UserEntity getUserByUsername(String username) throws UserNotFoundException;
+	UserDto getUserByUsername(String username) throws UserNotFoundException;
 
 	@Transactional
-	UserEntity insertUser(UserEntity userEntity);
+	UserDto insertUser(UserDto userDto);
 }

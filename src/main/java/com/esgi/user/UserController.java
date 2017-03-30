@@ -1,7 +1,6 @@
 package com.esgi.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -29,34 +28,34 @@ public class UserController {
 	}
 
 	@RequestMapping
-	public List<UserEntity> getAllUsers() {
+	public List<UserDto> getAllUsers() {
 		return userService.getAllUsers();
 	}
 
 	@RequestMapping("/{user_id}")
-	public UserEntity getUser(@PathVariable("user_id") Long id) throws UserNotFoundException {
+	public UserDto getUser(@PathVariable("user_id") Long id) throws UserNotFoundException {
 		return userService.getUser(id);
 	}
 
-	@RequestMapping(params = "username")
-	public UserEntity getUser(@RequestParam("username") String username) throws UserNotFoundException {
-		return userService.getUserByUsername(username);
+	@RequestMapping(params = "firstname")
+	public UserDto getUser(@RequestParam("firstname") String firstname) throws UserNotFoundException {
+		return userService.getUserByUsername(firstname);
 	}
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public ResponseEntity insertUser(@RequestBody @Valid UserEntity userEntity,
+	public ResponseEntity insertUser(@RequestBody @Valid UserDto userDto,
 									 BindingResult bindingResult) {
 
 		if(bindingResult.hasErrors()) {
 			throw new UserValidationException();
 		}
 
-		userService.insertUser(userEntity);
+		userService.insertUser(userDto);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{user_id}")
-				.buildAndExpand(userEntity.getId())
+				.buildAndExpand(userDto.getId())
 				.toUri();
 
 		return ResponseEntity.created(uri).build();

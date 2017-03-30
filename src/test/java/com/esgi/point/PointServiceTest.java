@@ -72,7 +72,6 @@ public class PointServiceTest {
         pointEntities.add(point2);
         pointEntities.add(point3);
         pointEntities.add(point4);
-        pointEntities.add(point5);
 
         when(pointRepository.findByIdLine(1L)).thenReturn(pointEntities);
         when(pointRepository.save(any(PointEntity.class))).thenReturn(point5);
@@ -90,7 +89,7 @@ public class PointServiceTest {
             fail("Test failed : an unexpected exception has been thrown when trying to access cercle with id = " + idLine);
         }
 
-        assertThat(allPoints).hasSize(5);
+        assertThat(allPoints).hasSize(4);
     }
 
     @Test
