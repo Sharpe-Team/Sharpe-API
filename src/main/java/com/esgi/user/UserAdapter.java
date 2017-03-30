@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserAdapter {
 
-    public UserEntity dtoToEntity(UserDto userDto) {
+    public static UserEntity dtoToEntity(UserDto userDto) {
         return UserEntity.builder()
                 .id(userDto.getId())
                 .firstname(userDto.getFirstname())
@@ -22,7 +22,7 @@ public class UserAdapter {
                 .build();
     }
 
-    public UserDto entityToDto(UserEntity userEntity) {
+    public static UserDto entityToDto(UserEntity userEntity) {
         return UserDto.builder()
                 .id(userEntity.getId())
                 .firstname(userEntity.getFirstname())

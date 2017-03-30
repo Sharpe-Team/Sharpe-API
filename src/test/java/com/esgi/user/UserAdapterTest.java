@@ -43,7 +43,6 @@ public class UserAdapterTest {
         assertThat(userEntity.getProfilePicture()).isEqualTo(userDto.getProfilePicture());
         assertThat(userEntity.getCreated()).isEqualTo(userDto.getCreated());
         assertThat(userEntity.getUpdated()).isEqualTo(userDto.getUpdated());
-
     }
 
     @Test

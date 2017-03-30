@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by thomasfouan on 04/03/2017.
@@ -21,32 +22,44 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<UserEntity> getAllUsers() {
-		return userRepository.findAll();
+	public List<UserDto> getAllUsers() {
+		List<UserDto> userDtoList = userRepository.findAll()
+				.stream()
+				.map(UserAdapter::entityToDto)
+				.collect(Collectors.toList());
+
+		return userDtoList;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public UserEntity getUser(Long id) throws UserNotFoundException {
-
+	public UserDto getUser(Long id) throws UserNotFoundException {
 		UserEntity user = userRepository.findOne(id);
 
-		if(user == null) {
+		if(user == null)
 			throw new UserNotFoundException();
-		}
 
-		return user;
+		return UserAdapter.entityToDto(user);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public UserEntity getUserByUsername(String username) throws UserNotFoundException {
-		return userRepository.findByUsername(username).stream().findFirst().orElseThrow(UserNotFoundException::new);
+	public UserDto getUserByUsername(String username) throws UserNotFoundException {
+		UserEntity userEntity =
+				userRepository.findByFirstname(username)
+						.stream()
+						.findFirst()
+						.orElseThrow(UserNotFoundException::new);
+		return UserAdapter.entityToDto(userEntity);
 	}
 
 	@Override
 	@Transactional
-	public UserEntity insertUser(UserEntity userEntity) {
-		return userRepository.save(userEntity);
+	public UserDto insertUser(UserDto userDto) {
+		UserEntity userEntity = UserAdapter.dtoToEntity(userDto);
+
+		userEntity = userRepository.save(userEntity);
+
+		return UserAdapter.entityToDto(userEntity);
 	}
 }

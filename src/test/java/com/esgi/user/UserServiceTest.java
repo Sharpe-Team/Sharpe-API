@@ -8,14 +8,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.fail;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by thomasfouan on 04/03/2017.
@@ -37,30 +36,54 @@ public class UserServiceTest {
 
 	private UserEntity user4;
 
+	private Date date;
+
 	public void initUsers() {
+
+		date = new Date();
 
 		user1 = UserEntity.builder()
 				.id(1L)
 				.firstname("first")
+				.lastname("lastname1")
+				.email("first@email.com")
 				.password("password1")
+				.profilePicture("url/picture1.png")
+				.created(date)
+				.updated(date)
 				.build();
 
 		user2 = UserEntity.builder()
 				.id(2L)
 				.firstname("second")
+				.lastname("lastname2")
+				.email("second@email.com")
 				.password("password2")
+				.profilePicture("url/picture2.png")
+				.created(date)
+				.updated(date)
 				.build();
 
 		user3 = UserEntity.builder()
 				.id(3L)
 				.firstname("third")
+				.lastname("lastname1")
+				.email("tird@email.com")
 				.password("password3")
+				.profilePicture("url/picture3.png")
+				.created(date)
+				.updated(date)
 				.build();
 
 		user4 = UserEntity.builder()
 				.id(4L)
 				.firstname("fourth")
+				.lastname("lastname4")
+				.email("fourth@email.com")
 				.password("password4")
+				.profilePicture("url/picture4.png")
+				.created(date)
+				.updated(date)
 				.build();
 	}
 
@@ -72,7 +95,7 @@ public class UserServiceTest {
 		ArrayList<UserEntity> list = new ArrayList<>();
 		list.add(user3);
 
-		when(userRepository.findByUsername(user3.getFirstname())).thenReturn(list);
+		when(userRepository.findByFirstname(user3.getFirstname())).thenReturn(list);
 
 		list = new ArrayList<>();
 		list.add(user1);
@@ -85,25 +108,25 @@ public class UserServiceTest {
 
 		when(userRepository.findOne(4L)).thenReturn(null);
 
-		when(userRepository.findByUsername("fourth")).thenReturn(new ArrayList<>());
+		when(userRepository.findByFirstname("fourth")).thenReturn(new ArrayList<>());
 
 		when(userRepository.save(any(UserEntity.class))).thenReturn(user4);
 	}
 
 	@Test
-	public void shouldGetAllUsers() {
+	public void should_get_all_users() {
 
-		List<UserEntity> allUsers = userService.getAllUsers();
+		List<UserDto> allUsers = userService.getAllUsers();
 
 		assertThat(allUsers).hasSize(3);
 	}
 
 	@Test
-	public void shouldGetOneUserWithId() {
+	public void should_get_one_user_with_id() {
 
 		Long id = user2.getId();
 
-		UserEntity user;
+		UserDto user;
 		try {
 			user = userService.getUser(id);
 
@@ -117,7 +140,7 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void shouldThrowUserNotFoundExceptionWithUnknownId() {
+	public void should_throw_UserNotFoundException_with_unknown_id() {
 
 		Long id = 4L;
 
@@ -130,12 +153,12 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void shouldGetOneUserByUsername() {
+	public void should_get_one_user_by_firstname() {
 
 		String username = user3.getFirstname();
 
 		try {
-			UserEntity user = userService.getUserByUsername(username);
+			UserDto user = userService.getUserByUsername(username);
 
 			assertThat(user).isNotNull();
 			assertThat(user.getId()).isEqualTo(user3.getId());
@@ -147,7 +170,7 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void shouldThrowUserNotFoundExceptionWithUnknownUsername() {
+	public void should_throw_UserNotFoundException_with_unknown_firstname() {
 
 		String username = "fourth";
 
@@ -160,9 +183,9 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void shouldInsertUser() {
+	public void should_insert_user() {
 
-		UserEntity user = UserEntity.builder()
+		UserDto user = UserDto.builder()
 				.firstname("fourth")
 				.password("password4")
 				.build();
