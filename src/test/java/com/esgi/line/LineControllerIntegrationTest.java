@@ -1,4 +1,4 @@
-package com.esgi.circle;
+package com.esgi.line;
 
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
@@ -21,9 +21,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@CircleData
+@LineData
 @ActiveProfiles("test")
-public class CircleControllerIntegrationTest {
+public class LineControllerIntegrationTest {
 
 	@LocalServerPort
 	private int localServerPort;
@@ -34,64 +34,94 @@ public class CircleControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldGetAllCircles() {
+	public void shouldGetAllLinesOfCircle1() {
+
+		Long idCircle = 1L;
+
 		when()
-				.get("/circles")
+				.get("/lines?idCircle={id_circle}", idCircle)
 		.then()
 				.statusCode(200)
-				.body("$", hasSize(3));
+				.body("$", hasSize(2));
 	}
 
 	@Test
-	public void shouldGetFirstCircle() {
-		when()
-				.get("/circles/{circle_id}", 1L)
-		.then()
-				.statusCode(200)
-				.body("id", is(1))
-				.body("name", is("circle1"))
-				.body("pictureUrl", is("picture1.png"))
-				.body("bannerPictureUrl", is("bannerPicture1.png"));
-	}
+	public void shouldThrowCircleNotFoundExceptionWithUnknownIdCircle() {
 
-	@Test
-	public void shouldNotFoundUnknownCircle() {
+		Long idCircle = 3L;
+
 		when()
-				.get("/circles/{circle_id}", 4L)
+				.get("/lines?idCircle={id_circle}", idCircle)
 		.then()
 				.statusCode(404);
 	}
 
 	@Test
-	public void shouldInsertCircle() {
-		CircleDto circleDto = CircleDto.builder()
-				.name("circle4")
-				.pictureUrl("picture4.png")
-				.bannerPictureUrl("bannerPicture4.png")
+	public void shouldGetFirstLine() {
+		when()
+				.get("/lines/{line_id}", 1L)
+		.then()
+				.statusCode(200)
+				.body("id", is(1))
+				.body("idCircle", is(1))
+				.body("name", is("line1"))
+				.body("announcement", is("message1"));
+	}
+
+	@Test
+	public void shouldNotFoundUnknownLine() {
+		when()
+				.get("/lines/{line_id}", 4L)
+		.then()
+				.statusCode(404);
+	}
+
+	@Test
+	public void shouldInsertLine() {
+		LineDto lineDto = LineDto.builder()
+				.id(4L)
+				.idCircle(2L)
+				.name("line4")
+				.announcement("message4")
 				.build();
 
 		given()
 				.contentType(JSON)
-				.body(circleDto)
+				.body(lineDto)
 		.when()
-				.post("/circles")
+				.post("/lines")
 		.then()
 				.statusCode(201);
 	}
 
 	@Test
-	public void shouldThrowCircleValidationExceptionForEmptyName() {
-		CircleDto circleDto = CircleDto.builder()
-				.name("")
-				.pictureUrl("picture4.png")
-				.bannerPictureUrl("bannerPicture4.png")
+	public void shouldThrowCircleValidationExceptionWithoutIdCircle() {
+		LineDto lineDto = LineDto.builder()
+				.name("line5")
+				.announcement("message5")
 				.build();
 
 		given()
 				.contentType(JSON)
-				.body(circleDto)
+				.body(lineDto)
 		.when()
-				.post("/circles")
+				.post("/lines")
+		.then()
+				.statusCode(400);
+	}
+
+	@Test
+	public void shouldThrowCircleValidationExceptionWithoutName() {
+		LineDto lineDto = LineDto.builder()
+				.idCircle(3L)
+				.announcement("message6")
+				.build();
+
+		given()
+				.contentType(JSON)
+				.body(lineDto)
+		.when()
+				.post("/lines")
 		.then()
 				.statusCode(400);
 	}

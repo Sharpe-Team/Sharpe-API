@@ -1,5 +1,6 @@
 package com.esgi.point;
 
+import com.esgi.line.LineNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

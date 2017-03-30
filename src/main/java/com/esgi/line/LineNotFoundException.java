@@ -1,4 +1,4 @@
-package com.esgi.point;
+package com.esgi.line;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 
