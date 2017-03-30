@@ -1,7 +1,6 @@
 package com.esgi.user;
 
 import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.http.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,7 +83,7 @@ public class UserControllerIntegrationTest {
 	@Test
 	public void shouldInsertUser() {
 		UserEntity user = UserEntity.builder()
-				.username("fourth")
+				.firstname("fourth")
 				.password("password4")
 				.build();
 
@@ -100,7 +99,7 @@ public class UserControllerIntegrationTest {
 	@Test
 	public void shouldThrowUserValidationExceptionForEmptyUsername() {
 		UserEntity user = UserEntity.builder()
-				.username("")
+				.firstname("")
 				.password("password4")
 				.build();
 
@@ -116,7 +115,7 @@ public class UserControllerIntegrationTest {
 	@Test
 	public void shouldThrowUserValidationExceptionForEmptyPassword() {
 		UserEntity user = UserEntity.builder()
-				.username("fourth")
+				.firstname("fourth")
 				.password("")
 				.build();
 
@@ -132,7 +131,7 @@ public class UserControllerIntegrationTest {
 	@Test
 	public void shouldThrowUserValidationExceptionForShortPassword() {
 		UserEntity user = UserEntity.builder()
-				.username("fourth")
+				.firstname("fourth")
 				.password("short")
 				.build();
 

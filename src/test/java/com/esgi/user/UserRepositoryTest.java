@@ -33,7 +33,7 @@ public class UserRepositoryTest {
 
 		assertThat(userEntities).hasSize(1);
 		assertThat(userEntities.get(0).getId()).isEqualTo(1);
-		assertThat(userEntities.get(0).getUsername()).isEqualTo("first");
+		assertThat(userEntities.get(0).getFirstname()).isEqualTo("first");
 		assertThat(userEntities.get(0).getPassword()).isEqualTo("password1");
 	}
 

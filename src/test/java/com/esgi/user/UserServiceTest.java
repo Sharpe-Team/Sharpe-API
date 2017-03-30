@@ -41,25 +41,25 @@ public class UserServiceTest {
 
 		user1 = UserEntity.builder()
 				.id(1L)
-				.username("first")
+				.firstname("first")
 				.password("password1")
 				.build();
 
 		user2 = UserEntity.builder()
 				.id(2L)
-				.username("second")
+				.firstname("second")
 				.password("password2")
 				.build();
 
 		user3 = UserEntity.builder()
 				.id(3L)
-				.username("third")
+				.firstname("third")
 				.password("password3")
 				.build();
 
 		user4 = UserEntity.builder()
 				.id(4L)
-				.username("fourth")
+				.firstname("fourth")
 				.password("password4")
 				.build();
 	}
@@ -72,7 +72,7 @@ public class UserServiceTest {
 		ArrayList<UserEntity> list = new ArrayList<>();
 		list.add(user3);
 
-		when(userRepository.findByUsername(user3.getUsername())).thenReturn(list);
+		when(userRepository.findByUsername(user3.getFirstname())).thenReturn(list);
 
 		list = new ArrayList<>();
 		list.add(user1);
@@ -109,7 +109,7 @@ public class UserServiceTest {
 
 			assertThat(user).isNotNull();
 			assertThat(user.getId()).isEqualTo(user2.getId());
-			assertThat(user.getUsername()).isEqualTo(user2.getUsername());
+			assertThat(user.getFirstname()).isEqualTo(user2.getFirstname());
 			assertThat(user.getPassword()).isEqualTo(user2.getPassword());
 		} catch (UserNotFoundException e) {
 			fail("Test failed : an unexpected exception has been thrown when trying to retrieve on user with id = " + id);
@@ -132,14 +132,14 @@ public class UserServiceTest {
 	@Test
 	public void shouldGetOneUserByUsername() {
 
-		String username = user3.getUsername();
+		String username = user3.getFirstname();
 
 		try {
 			UserEntity user = userService.getUserByUsername(username);
 
 			assertThat(user).isNotNull();
 			assertThat(user.getId()).isEqualTo(user3.getId());
-			assertThat(user.getUsername()).isEqualTo(user3.getUsername());
+			assertThat(user.getFirstname()).isEqualTo(user3.getFirstname());
 			assertThat(user.getPassword()).isEqualTo(user3.getPassword());
 		} catch (UserNotFoundException e) {
 			fail("Test failed : an unexpected exception has been thrown when trying to retrieve one user with username = '" + username + "'");
@@ -163,7 +163,7 @@ public class UserServiceTest {
 	public void shouldInsertUser() {
 
 		UserEntity user = UserEntity.builder()
-				.username("fourth")
+				.firstname("fourth")
 				.password("password4")
 				.build();
 
