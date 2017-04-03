@@ -1,5 +1,6 @@
 package com.esgi.point;
 
+import com.esgi.line.LineNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

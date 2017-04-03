@@ -1,5 +1,6 @@
 package com.esgi.point;
 
+import com.esgi.line.LineNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class PointController {
 	}
 
 	@GetMapping
-	public List<PointDto> getPointsOfCercle(@RequestParam("line") Long id) throws LineNotFoundException{
+	public List<PointDto> getPointsOfCercle(@RequestParam("line") Long id) throws LineNotFoundException {
 		List<PointDto> pointInLine = pointService.getPointInLine(id);
 		return pointInLine;
 	}

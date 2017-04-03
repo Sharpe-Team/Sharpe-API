@@ -1,7 +1,6 @@
 package com.esgi.circle;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -96,7 +95,7 @@ public class CircleServiceTest {
 	}
 
 	@Test
-	public void shouldGetOneUser() {
+	public void shouldGetOneCircle() {
 
 		Long id = circle1.getId();
 
@@ -116,7 +115,7 @@ public class CircleServiceTest {
 	}
 
 	@Test
-	public void shouldThrowCircleNotFoundExceptionWhithUnkonwnId() {
+	public void shouldThrowCircleNotFoundExceptionWithUnknownId() {
 
 		Long id = 4L;
 
