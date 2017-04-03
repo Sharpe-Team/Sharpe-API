@@ -156,7 +156,7 @@ public class UserControllerIntegrationTest {
 		UserEntity user = UserEntity.builder()
 				.firstname("fourth")
 				.lastname("lastname4")
-				.email("fourth@email.com")
+				.email("fourthemail.com")
 				.password("short")
 				.profilePicture("url/picture4.png")
 				.created(date)
@@ -169,6 +169,31 @@ public class UserControllerIntegrationTest {
 		.when()
 				.post("/users")
 		.then()
+				.statusCode(400);
+	}
+
+	@Test
+	public void should_throw_UserValidationException_for_invalid_email() {
+		Date date = new Date();
+
+		String invalidEmail = "fourthemail.com";
+
+		UserEntity user = UserEntity.builder()
+				.firstname("fourth")
+				.lastname("lastname4")
+				.email(invalidEmail)
+				.password("password4")
+				.profilePicture("url/picture4.png")
+				.created(date)
+				.updated(date)
+				.build();
+
+		given()
+				.contentType(JSON)
+				.body(user)
+				.when()
+				.post("/users")
+				.then()
 				.statusCode(400);
 	}
 }
