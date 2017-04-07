@@ -1,6 +1,7 @@
 package com.esgi.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +58,10 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public UserDto insertUser(UserDto userDto) {
 		UserEntity userEntity = UserAdapter.dtoToEntity(userDto);
+
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
+		String passwordDto = userEntity.getPassword();
+		userEntity.setPassword(passwordEncoder.encode(passwordDto));
 
 		userEntity = userRepository.save(userEntity);
 

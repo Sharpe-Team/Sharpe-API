@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -48,8 +49,13 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         // TODO: 07/04/2017 PASSWORD HASH
         UserEntity userEntity = userRepository.findByEmail(credential.getUsername());
-        if (userEntity == null
-                || passwordNotMatching(userEntity.getPassword(), credential.getPassword())) {
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
+
+       // if (userEntity == null
+         //       || passwordNotMatching(userEntity.getPassword(), credential.getPassword())) {
+         if (userEntity == null
+               || !passwordEncoder.matches(credential.getPassword(), userEntity.getPassword())) {
             logger.info("email or password incorrect");
             throw new AuthenticationFailException();
         }
