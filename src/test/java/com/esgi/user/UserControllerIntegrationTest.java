@@ -100,7 +100,7 @@ public class UserControllerIntegrationTest {
 				.contentType(JSON)
 				.body(user)
 		.when()
-				.post("/users")
+				.post("/users/subscribe")
 		.then()
 				.statusCode(201);
 	}
@@ -122,7 +122,7 @@ public class UserControllerIntegrationTest {
 				.contentType(JSON)
 				.body(user)
 		.when()
-				.post("/users")
+				.post("/users/subscribe")
 		.then()
 				.statusCode(400);
 	}
@@ -144,7 +144,7 @@ public class UserControllerIntegrationTest {
 				.contentType(JSON)
 				.body(user)
 		.when()
-				.post("/users")
+				.post("/users/subscribe")
 		.then()
 				.statusCode(400);
 	}
@@ -167,7 +167,7 @@ public class UserControllerIntegrationTest {
 				.contentType(JSON)
 				.body(user)
 		.when()
-				.post("/users")
+				.post("/users/subscribe")
 		.then()
 				.statusCode(400);
 	}
@@ -191,9 +191,9 @@ public class UserControllerIntegrationTest {
 		given()
 				.contentType(JSON)
 				.body(user)
-				.when()
-				.post("/users")
-				.then()
+		.when()
+				.post("/users/subscribe")
+		.then()
 				.statusCode(400);
 	}
 }

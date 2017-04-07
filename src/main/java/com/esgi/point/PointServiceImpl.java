@@ -16,10 +16,12 @@ import java.util.stream.Collectors;
 public class PointServiceImpl implements PointService {
 
     private PointRepository pointRepository;
+    private PointAdapter pointAdapter;
 
     @Autowired
-    public PointServiceImpl(PointRepository pointRepository) {
+    public PointServiceImpl(PointRepository pointRepository,PointAdapter pointAdapter) {
         this.pointRepository = pointRepository;
+        this.pointAdapter = pointAdapter;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class PointServiceImpl implements PointService {
 
         pointEntity = pointRepository.save(pointEntity);
 
-        return PointAdapter.convertToDto(pointEntity);
+        return pointAdapter.convertToDto(pointEntity);
     }
 
     @Override

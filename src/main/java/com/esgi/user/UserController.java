@@ -42,7 +42,7 @@ public class UserController {
 		return userService.getUserByUsername(firstname);
 	}
 
-	@PostMapping
+	@PostMapping("/subscribe")
 	@ResponseStatus(CREATED)
 	public ResponseEntity insertUser(@RequestBody @Valid UserDto userDto,
 									 BindingResult bindingResult) {
