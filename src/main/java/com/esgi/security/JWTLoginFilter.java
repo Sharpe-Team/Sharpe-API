@@ -52,13 +52,11 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
 
-       // if (userEntity == null
-         //       || passwordNotMatching(userEntity.getPassword(), credential.getPassword())) {
-         if (userEntity == null
-               || !passwordEncoder.matches(credential.getPassword(), userEntity.getPassword())) {
-            logger.info("email or password incorrect");
-            throw new AuthenticationFailException();
-        }
+		if (userEntity == null
+				|| !passwordEncoder.matches(credential.getPassword(), userEntity.getPassword())) {
+			logger.info("email or password incorrect");
+			res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "L'adresse email ou le mot de passe est incorrect.");
+		}
         
         return new UsernamePasswordAuthenticationToken(
                 credential.getUsername(),
@@ -80,9 +78,5 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             Authentication auth) throws IOException, ServletException {
         TokenAuthenticationService
                 .addAuthentication(res, auth.getName());
-    }
-
-    private boolean passwordNotMatching(String passwordRepository, String passwordRequest) {
-        return passwordRepository.compareTo(passwordRequest) == 1;
     }
 }

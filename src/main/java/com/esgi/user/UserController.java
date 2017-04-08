@@ -2,6 +2,7 @@ package com.esgi.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -44,20 +45,32 @@ public class UserController {
 
 	@PostMapping("/subscribe")
 	@ResponseStatus(CREATED)
-	public ResponseEntity insertUser(@RequestBody @Valid UserDto userDto,
-									 BindingResult bindingResult) {
+	public UserDto insertUser(@RequestBody @Valid UserDto userDto,
+									 BindingResult bindingResult) throws EmailAddressAlreadyExistsException {
 
 		if(bindingResult.hasErrors()) {
 			throw new UserValidationException();
 		}
 
-		userService.insertUser(userDto);
+		// Check if the email is already used
+		try {
+			userService.getUserByUsername(userDto.getEmail());
+			throw new EmailAddressAlreadyExistsException();
+		} catch (UserNotFoundException e) {
+			// Hash password before save it in DB
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
+			userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
+			userDto = userService.insertUser(userDto);
+		}
+
+		/*
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{user_id}")
 				.buildAndExpand(userDto.getId())
 				.toUri();
+				*/
 
-		return ResponseEntity.created(uri).build();
+		return userDto;
 	}
 }

@@ -29,10 +29,11 @@ public class PointEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "idline")
+    @Column(name = "id_line")
+    @NotNull
     private Long idLine;
 
-    @Column(name = "iduser")
+    @Column(name = "id_user")
     @NotNull
     private Long idUser;
 
