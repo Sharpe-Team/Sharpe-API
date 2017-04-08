@@ -1,5 +1,7 @@
 package com.esgi.circle;
 
+import com.esgi.line.LineEntity;
+import com.esgi.line.LineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -23,9 +25,12 @@ public class CircleController {
 
 	private CircleService circleService;
 
+	private LineService lineService;
+
 	@Autowired
-	public CircleController(CircleService circleService) {
+	public CircleController(CircleService circleService, LineService lineService) {
 		this.circleService = circleService;
+		this.lineService = lineService;
 	}
 
 	@RequestMapping
@@ -43,7 +48,7 @@ public class CircleController {
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public ResponseEntity insertCircle(@RequestBody @Valid CircleDto circleDto,
+	public CircleDto insertCircle(@RequestBody @Valid CircleDto circleDto,
 									   BindingResult bindingResult) {
 
 		if(bindingResult.hasErrors()) {
@@ -51,12 +56,22 @@ public class CircleController {
 		}
 
 		CircleEntity circleEntity = circleService.insertCircle(CircleAdapter.convertToEntity(circleDto));
+		LineEntity lineEntity = LineEntity.builder()
+				.idCircle(circleEntity.getId())
+				.name(circleEntity.getName())
+				.announcement("")
+				.build();
 
+		lineEntity = lineService.insertLine(lineEntity);
+
+		return CircleAdapter.convertToDto(circleEntity);
+		/*
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{circle_id}")
 				.buildAndExpand(circleEntity.getId())
 				.toUri();
 
 		return ResponseEntity.created(uri).build();
+		*/
 	}
 }

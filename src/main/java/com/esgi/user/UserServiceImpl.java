@@ -26,7 +26,12 @@ public class UserServiceImpl implements UserService {
 	public List<UserDto> getAllUsers() {
 		List<UserDto> userDtoList = userRepository.findAll()
 				.stream()
-				.map(UserAdapter::entityToDto)
+				.map((user) -> {
+					UserDto userDto = UserAdapter.entityToDto(user);
+					// Hide password
+					userDto.setPassword("");
+					return userDto;
+				})
 				.collect(Collectors.toList());
 
 		return userDtoList;

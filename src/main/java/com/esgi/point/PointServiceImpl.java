@@ -32,21 +32,18 @@ public class PointServiceImpl implements PointService {
                 .map(PointAdapter::convertToDto)
                 .collect(Collectors.toList());
 
-        if (pointDtoList.size() == 0)
-            throw new LineNotFoundException();
-
         return pointDtoList;
     }
 
     @Override
     @Transactional
-    public PointDto insertPoint(PointDto pointDto) {
+    public PointEntity insertPoint(PointDto pointDto) {
 
         PointEntity pointEntity = PointAdapter.convertToEntity(pointDto);
 
         pointEntity = pointRepository.save(pointEntity);
 
-        return pointAdapter.convertToDto(pointEntity);
+        return pointEntity;
     }
 
     @Override

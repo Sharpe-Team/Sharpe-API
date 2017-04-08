@@ -23,7 +23,7 @@ public class PointController {
 	}
 
 	@GetMapping
-	public List<PointDto> getPointsOfCercle(@RequestParam("line") Long id) throws LineNotFoundException {
+	public List<PointDto> getPointsOfCercle(@RequestParam("idLine") Long id) throws LineNotFoundException {
 		List<PointDto> pointInLine = pointService.getPointInLine(id);
 		return pointInLine;
 	}
@@ -35,7 +35,7 @@ public class PointController {
 		if(bindingResult.hasErrors())
 			throw new PointValidationException();
 
-		PointDto dto = pointService.insertPoint(pointDto);
-		return dto;
+		PointEntity pointEntity = pointService.insertPoint(pointDto);
+		return PointAdapter.convertToDto(pointEntity);
 	}
 }

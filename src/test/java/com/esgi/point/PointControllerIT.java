@@ -37,7 +37,7 @@ public class PointControllerIT {
 	@Test
 	public void should_get_all_points_of_topic_one() {
 		when()
-				.get("/points?line={line}", 1L)
+				.get("/points?idLine={line}", 1L)
 		.then()
 				.log().all()
 				.statusCode(200)
