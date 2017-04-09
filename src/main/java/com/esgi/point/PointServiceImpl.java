@@ -1,6 +1,7 @@
 package com.esgi.point;
 
 import com.esgi.line.LineNotFoundException;
+import com.esgi.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +17,15 @@ import java.util.stream.Collectors;
 public class PointServiceImpl implements PointService {
 
     private PointRepository pointRepository;
-    private PointAdapter pointAdapter;
 
     @Autowired
-    public PointServiceImpl(PointRepository pointRepository,PointAdapter pointAdapter) {
+    public PointServiceImpl(PointRepository pointRepository) {
         this.pointRepository = pointRepository;
-        this.pointAdapter = pointAdapter;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<PointDto> getPointInLine(Long idLine) throws LineNotFoundException {
+    public List<PointDto> getPointsInLine(Long idLine) throws LineNotFoundException {
         List<PointDto> pointDtoList = pointRepository.findByIdLine(idLine)
                 .stream()
                 .map(PointAdapter::convertToDto)

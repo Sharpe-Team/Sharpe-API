@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.FilterChain;
@@ -34,10 +35,13 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private UserRepository userRepository;
 
+    private UserEntity userEntity;
+
     public JWTLoginFilter(String url, AuthenticationManager authManager, UserRepository userRepository) {
         super(new AntPathRequestMatcher(url));
         setAuthenticationManager(authManager);
         this.userRepository = userRepository;
+        this.userEntity = null;
     }
 
     @Override
@@ -48,7 +52,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
                 .readValue(req.getInputStream(), Credential.class);
 
         // TODO: 07/04/2017 PASSWORD HASH
-        UserEntity userEntity = userRepository.findByEmail(credential.getUsername());
+        this.userEntity = userRepository.findByEmail(credential.getUsername());
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
 
@@ -56,8 +60,9 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 				|| !passwordEncoder.matches(credential.getPassword(), userEntity.getPassword())) {
 			logger.info("email or password incorrect");
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "L'adresse email ou le mot de passe est incorrect.");
+			return null;
 		}
-        
+
         return new UsernamePasswordAuthenticationToken(
                 credential.getUsername(),
                 credential.getPassword(),
@@ -72,11 +77,9 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     @Override
-    protected void successfulAuthentication(
-            HttpServletRequest req,
-            HttpServletResponse res, FilterChain chain,
-            Authentication auth) throws IOException, ServletException {
-        TokenAuthenticationService
-                .addAuthentication(res, auth.getName());
+    protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res,
+											FilterChain chain, Authentication auth) throws IOException, ServletException {
+
+        TokenAuthenticationService.addAuthentication(res, userEntity);
     }
 }

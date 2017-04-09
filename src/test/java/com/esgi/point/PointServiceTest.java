@@ -85,7 +85,7 @@ public class PointServiceTest {
         Long idLine = 1L;
 
         try {
-            allPoints = pointService.getPointInLine(idLine);
+            allPoints = pointService.getPointsInLine(idLine);
         } catch (LineNotFoundException e) {
             fail("Test failed : an unexpected exception has been thrown when trying to access cercle with id = " + idLine);
         }
@@ -100,7 +100,7 @@ public class PointServiceTest {
         Long idLineUnknown = 62L;
 
         try {
-            pointService.getPointInLine(idLineUnknown);
+            pointService.getPointsInLine(idLineUnknown);
 
             fail("Test failed : an exception should have been thrown when trying to acceszs cercle with id = " + idLineUnknown);
         } catch (LineNotFoundException e) {

@@ -1,5 +1,6 @@
 package com.esgi.point;
 
+import com.esgi.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,4 +31,6 @@ public class PointDto {
 
     private Date created;
     private Date updated;
+
+    private UserDto user;
 }

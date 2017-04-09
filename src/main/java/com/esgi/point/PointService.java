@@ -10,10 +10,10 @@ import java.util.List;
  */
 public interface PointService {
 
-    @Transactional(readOnly = true)
-    List<PointDto> getPointInLine(Long idLine) throws LineNotFoundException;
+	@Transactional(readOnly = true)
+	List<PointDto> getPointsInLine(Long idLine) throws LineNotFoundException;
 
-    @Transactional
+	@Transactional
     PointEntity insertPoint(PointDto pointDto);
 
     @Transactional(readOnly = true)
