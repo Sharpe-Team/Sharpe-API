@@ -59,7 +59,12 @@ public class UserController {
 		} catch (UserNotFoundException e) {
 			// Hash password before save it in DB
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
-			userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+			String password = userDto.getPassword();
+
+			String encodedPwd = passwordEncoder.encode(password);
+
+			userDto.setPassword(encodedPwd);
 
 			userDto = userService.insertUser(userDto);
 		}

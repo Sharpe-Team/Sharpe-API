@@ -56,8 +56,13 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
 
-		if (userEntity == null
-				|| !passwordEncoder.matches(credential.getPassword(), userEntity.getPassword())) {
+		boolean result = false;
+
+		if(userEntity != null) {
+			result = passwordEncoder.matches(credential.getPassword(), userEntity.getPassword());
+		}
+
+		if (!result) {
 			logger.info("email or password incorrect");
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "L'adresse email ou le mot de passe est incorrect.");
 			return null;
