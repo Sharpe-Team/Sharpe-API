@@ -1,5 +1,6 @@
 package com.esgi.circle;
 
+import com.esgi.line.LineDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by thomasfouan on 29/03/2017.
@@ -41,4 +43,6 @@ public class CircleDto {
 	 * The URL of the banner picture of the Circle.
 	 */
 	private String bannerPictureUrl;
+
+	private List<LineDto> lines;
 }

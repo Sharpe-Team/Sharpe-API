@@ -1,5 +1,7 @@
 package com.esgi.circle;
 
+import com.esgi.line.LineEntity;
+import com.esgi.line.LineRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,6 +32,9 @@ public class CircleServiceTest {
 	@Mock
 	private CircleRepository circleRepository;
 
+	@Mock
+	private LineRepository lineRepository;
+
 	private CircleEntity circle1;
 
 	private CircleEntity circle2;
@@ -36,6 +42,8 @@ public class CircleServiceTest {
 	private CircleEntity circle3;
 
 	private CircleEntity circle4;
+
+	private LineEntity line;
 
 	@Before
 	public void initCircles() {
@@ -67,6 +75,13 @@ public class CircleServiceTest {
 				.pictureUrl("picture4.png")
 				.bannerPictureUrl("bannerPicture4.png")
 				.build();
+
+		line = LineEntity.builder()
+				.id(1L)
+				.idCircle(1L)
+				.name("Line 1")
+				.announcement("")
+				.build();
 	}
 
 	@Before
@@ -77,6 +92,9 @@ public class CircleServiceTest {
 		list.add(circle2);
 		list.add(circle3);
 
+		List<LineEntity> listLine = new ArrayList<>();
+		listLine.add(line);
+
 		when(circleRepository.findAll()).thenReturn(list);
 
 		when(circleRepository.findOne(1L)).thenReturn(circle1);
@@ -84,12 +102,14 @@ public class CircleServiceTest {
 		when(circleRepository.findOne(4L)).thenReturn(null);
 
 		when(circleRepository.save(any(CircleEntity.class))).thenReturn(circle4);
+
+		when(lineRepository.findByIdCircle(1L)).thenReturn(listLine);
 	}
 
 	@Test
 	public void shouldGetAllCircles() {
 
-		List<CircleEntity> result = circleService.getAllCircles();
+		List<CircleDto> result = circleService.getAllCircles();
 
 		assertThat(result).hasSize(3);
 	}
@@ -99,7 +119,7 @@ public class CircleServiceTest {
 
 		Long id = circle1.getId();
 
-		CircleEntity result;
+		CircleDto result;
 
 		try {
 			result = circleService.getCircle(id);
@@ -109,6 +129,7 @@ public class CircleServiceTest {
 			assertThat(result.getName()).isEqualTo(circle1.getName());
 			assertThat(result.getPictureUrl()).isEqualTo(circle1.getPictureUrl());
 			assertThat(result.getBannerPictureUrl()).isEqualTo(circle1.getBannerPictureUrl());
+			assertThat(result.getLines()).hasSize(1);
 		} catch (CircleNotFoundException e) {
 			fail("Test failed : an unexpected exception has been thrown when trying to retrieve one circle with id = " + id);
 		}

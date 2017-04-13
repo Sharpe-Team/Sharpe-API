@@ -16,7 +16,7 @@ public interface CircleService {
 	 * @return List of Circles
 	 */
 	@Transactional(readOnly = true)
-	List<CircleEntity> getAllCircles();
+	List<CircleDto> getAllCircles();
 
 	/**
 	 * Get a Circle by its id.
@@ -24,7 +24,7 @@ public interface CircleService {
 	 * @return the Circle represented by the id
 	 */
 	@Transactional(readOnly = true)
-	CircleEntity getCircle(Long id) throws CircleNotFoundException;
+	CircleDto getCircle(Long id) throws CircleNotFoundException;
 
 	/**
 	 * Insert a new Circle in the Repository.

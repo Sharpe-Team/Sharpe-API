@@ -35,15 +35,12 @@ public class CircleController {
 
 	@RequestMapping
 	public List<CircleDto> getAllCircles() {
-		return circleService.getAllCircles()
-				.stream()
-				.map(CircleAdapter::convertToDto)
-				.collect(Collectors.toList());
+		return circleService.getAllCircles();
 	}
 
 	@RequestMapping("/{circle_id}")
 	public CircleDto getCircle(@PathVariable("circle_id") Long id) throws CircleNotFoundException {
-		return CircleAdapter.convertToDto(circleService.getCircle(id));
+		return circleService.getCircle(id);
 	}
 
 	@PostMapping
