@@ -57,15 +57,6 @@ public class UserController {
 			userService.getUserByUsername(userDto.getEmail());
 			throw new EmailAddressAlreadyExistsException();
 		} catch (UserNotFoundException e) {
-			// Hash password before save it in DB
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
-
-			String password = userDto.getPassword();
-
-			String encodedPwd = passwordEncoder.encode(password);
-
-			userDto.setPassword(encodedPwd);
-
 			userDto = userService.insertUser(userDto);
 		}
 

@@ -40,7 +40,7 @@ public class PointEntity {
     @Column
     @NotNull
     @NotEmpty
-    @Length(min = 1)
+    @Length(min = 1, max = 2000)
     private String content;
 
     @CreationTimestamp
