@@ -1,4 +1,5 @@
 target/
+out/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -22,3 +23,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+### MAC files ###
+.DS_Store
+*/.DS_Store

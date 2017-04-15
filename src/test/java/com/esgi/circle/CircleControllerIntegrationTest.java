@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -15,6 +16,7 @@ import static com.jayway.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_CLASS;
 
 /**
  * Created by thomasfouan on 29/03/2017.
@@ -23,6 +25,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @CircleData
 @ActiveProfiles("test")
+@DirtiesContext(classMode = AFTER_CLASS)
 public class CircleControllerIntegrationTest {
 
 	@LocalServerPort
