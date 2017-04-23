@@ -18,5 +18,5 @@ public interface UserService {
 	UserDto getUserByUsername(String username) throws UserNotFoundException;
 
 	@Transactional
-	UserDto insertUser(UserDto userDto);
+	UserDto insertUser(UserDto userDto) throws EmailAddressAlreadyExistsException;
 }

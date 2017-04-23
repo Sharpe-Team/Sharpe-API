@@ -22,9 +22,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public List<UserDto> getAllUsers() {
-		List<UserDto> userDtoList = userRepository.findAll()
+		return userRepository.findAll()
 				.stream()
 				.map((user) -> {
 					UserDto userDto = UserAdapter.entityToDto(user);
@@ -33,42 +32,43 @@ public class UserServiceImpl implements UserService {
 					return userDto;
 				})
 				.collect(Collectors.toList());
-
-		return userDtoList;
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public UserDto getUser(Long id) throws UserNotFoundException {
 		UserEntity user = userRepository.findOne(id);
 
-		if(user == null)
+		if(user == null) {
 			throw new UserNotFoundException();
+		}
 
 		return UserAdapter.entityToDto(user);
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public UserDto getUserByUsername(String username) throws UserNotFoundException {
-		UserEntity userEntity =
-				userRepository.findByFirstname(username)
-						.stream()
-						.findFirst()
-						.orElseThrow(UserNotFoundException::new);
+		UserEntity userEntity = userRepository.findByFirstname(username)
+				.stream()
+				.findFirst()
+				.orElseThrow(UserNotFoundException::new);
 		return UserAdapter.entityToDto(userEntity);
 	}
 
 	@Override
-	@Transactional
-	public UserDto insertUser(UserDto userDto) {
+	public UserDto insertUser(UserDto userDto) throws EmailAddressAlreadyExistsException {
 		UserEntity userEntity = UserAdapter.dtoToEntity(userDto);
 
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
-		String passwordDto = userEntity.getPassword();
-		userEntity.setPassword(passwordEncoder.encode(passwordDto));
+		// Check if the email address is already used
+		try {
+			getUserByUsername(userDto.getEmail());
+			throw new EmailAddressAlreadyExistsException();
+		} catch (UserNotFoundException e) {
+			// Hash the password before save it in the DB
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
+			userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 
-		userEntity = userRepository.save(userEntity);
+			userEntity = userRepository.save(userEntity);
+		}
 
 		return UserAdapter.entityToDto(userEntity);
 	}

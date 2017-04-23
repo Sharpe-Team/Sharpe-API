@@ -37,7 +37,7 @@ public class CircleControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldGetAllCircles() {
+	public void should_get_all_circles() {
 		when()
 				.get("/circles")
 		.then()
@@ -46,7 +46,7 @@ public class CircleControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldGetFirstCircle() {
+	public void should_get_first_circle() {
 		when()
 				.get("/circles/{circle_id}", 1L)
 		.then()
@@ -58,7 +58,7 @@ public class CircleControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldNotFoundUnknownCircle() {
+	public void should_not_found_unknown_circle() {
 		when()
 				.get("/circles/{circle_id}", 4L)
 		.then()
@@ -66,7 +66,7 @@ public class CircleControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldInsertCircle() {
+	public void should_insert_circle() {
 		CircleDto circleDto = CircleDto.builder()
 				.name("circle4")
 				.pictureUrl("picture4.png")
@@ -83,7 +83,7 @@ public class CircleControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldThrowCircleValidationExceptionForEmptyName() {
+	public void should_throw_CircleValidationException_for_empty_name() {
 		CircleDto circleDto = CircleDto.builder()
 				.name("")
 				.pictureUrl("picture4.png")

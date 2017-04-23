@@ -27,7 +27,7 @@ public class LineRepositoryTest {
 	private LineRepository repository;
 
 	@Test
-	public void shouldGet2LinesForIdCircle1() {
+	public void should_get_2_lines_for_id_circle_1() {
 
 		List<LineEntity> list = repository.findByIdCircle(1L);
 
@@ -37,7 +37,7 @@ public class LineRepositoryTest {
 	}
 
 	@Test
-	public void shouldGet1LineForIdCircle3() {
+	public void should_get_1_line_for_id_circle_3() {
 
 		List<LineEntity> list = repository.findByIdCircle(2L);
 
@@ -46,7 +46,7 @@ public class LineRepositoryTest {
 	}
 
 	@Test
-	public void shouldGetOLineForIdCircle4() {
+	public void should_not_get_line_for_id_circle_4() {
 
 		List<LineEntity> list = repository.findByIdCircle(3L);
 

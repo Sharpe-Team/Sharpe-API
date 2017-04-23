@@ -32,5 +32,5 @@ public interface CircleService {
 	 * @return the CircleEntity with the id provided by the Repository
 	 */
 	@Transactional
-	CircleEntity insertCircle(CircleEntity circleEntity);
+	CircleDto insertCircle(CircleEntity circleEntity);
 }

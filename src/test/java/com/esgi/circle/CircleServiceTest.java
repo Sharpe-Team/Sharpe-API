@@ -36,17 +36,14 @@ public class CircleServiceTest {
 	private LineRepository lineRepository;
 
 	private CircleEntity circle1;
-
 	private CircleEntity circle2;
-
 	private CircleEntity circle3;
-
 	private CircleEntity circle4;
 
 	private LineEntity line;
 
 	@Before
-	public void initCircles() {
+	public void init_circles() {
 
 		circle1 = CircleEntity.builder()
 				.id(1L)
@@ -85,7 +82,7 @@ public class CircleServiceTest {
 	}
 
 	@Before
-	public void configureMock() {
+	public void configure_mock() {
 
 		List<CircleEntity> list = new ArrayList<>();
 		list.add(circle1);
@@ -107,7 +104,7 @@ public class CircleServiceTest {
 	}
 
 	@Test
-	public void shouldGetAllCircles() {
+	public void should_get_all_circles() {
 
 		List<CircleDto> result = circleService.getAllCircles();
 
@@ -115,7 +112,7 @@ public class CircleServiceTest {
 	}
 
 	@Test
-	public void shouldGetOneCircle() {
+	public void should_get_one_circle() {
 
 		Long id = circle1.getId();
 
@@ -136,7 +133,7 @@ public class CircleServiceTest {
 	}
 
 	@Test
-	public void shouldThrowCircleNotFoundExceptionWithUnknownId() {
+	public void should_throw_CircleNotFoundException_with_unknown_id() {
 
 		Long id = 4L;
 
@@ -149,7 +146,7 @@ public class CircleServiceTest {
 	}
 
 	@Test
-	public void shouldInsertCircle() {
+	public void should_insert_circle() {
 
 		CircleEntity circleEntity = CircleEntity.builder()
 				.name("new Entity")
@@ -157,9 +154,9 @@ public class CircleServiceTest {
 				.bannerPictureUrl("new-banner-picture.png")
 				.build();
 
-		circleEntity = circleService.insertCircle(circleEntity);
+		CircleDto circleDto = circleService.insertCircle(circleEntity);
 
-		assertThat(circleEntity.getId()).isEqualTo(4L);
+		assertThat(circleDto.getId()).isEqualTo(4L);
 
 		verify(circleRepository, times(1)).save(any(CircleEntity.class));
 	}

@@ -2,6 +2,8 @@ package com.esgi.point;
 
 import com.esgi.line.LineNotFoundException;
 import com.esgi.user.UserDto;
+import com.esgi.user.UserNotFoundException;
+import com.esgi.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,36 +20,51 @@ public class PointServiceImpl implements PointService {
 
     private PointRepository pointRepository;
 
+    private UserService userService;
+
     @Autowired
-    public PointServiceImpl(PointRepository pointRepository) {
+    public PointServiceImpl(PointRepository pointRepository, UserService userService) {
         this.pointRepository = pointRepository;
+        this.userService = userService;
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<PointDto> getPointsInLine(Long idLine) throws LineNotFoundException {
         List<PointDto> pointDtoList = pointRepository.findByIdLine(idLine)
                 .stream()
-                .map(PointAdapter::convertToDto)
+                .map(this::getCompletePointDto)
                 .collect(Collectors.toList());
 
         return pointDtoList;
     }
 
     @Override
-    @Transactional
-    public PointEntity insertPoint(PointDto pointDto) {
-
-        PointEntity pointEntity = PointAdapter.convertToEntity(pointDto);
-
-        pointEntity = pointRepository.save(pointEntity);
-
-        return pointEntity;
+    public PointDto insertPoint(PointEntity pointEntity) {
+		return PointAdapter.convertToDto(pointRepository.save(pointEntity));
     }
 
     @Override
-    @Transactional
-    public void deletePoint(Long idMessage) {
-        pointRepository.delete(idMessage);
+    public void deletePoint(Long idPoint) {
+        pointRepository.delete(idPoint);
+    }
+
+    private PointDto getCompletePointDto(PointEntity pointEntity) {
+    	PointDto pointDto = PointAdapter.convertToDto(pointEntity);
+
+    	// Get info of the sender of this point
+        UserDto userDto = null;
+        try {
+            userDto = userService.getUser(pointDto.getIdUser());
+            userDto.setPassword("");
+        } catch (UserNotFoundException e) {
+            userDto = UserDto.builder()
+                    .firstname("Deleted user")
+                    .lastname("")
+                    .email("")
+                    .build();
+        } finally {
+            pointDto.setUser(userDto);
+        }
+        return pointDto;
     }
 }

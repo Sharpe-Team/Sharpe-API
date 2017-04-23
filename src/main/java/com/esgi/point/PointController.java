@@ -31,34 +31,17 @@ public class PointController {
 
 	@GetMapping
 	public List<PointDto> getAllPointsInLine(@RequestParam("idLine") Long id) throws LineNotFoundException {
-		List<PointDto> pointInLine = pointService.getPointsInLine(id);
-
-		return pointInLine.stream().map(pointDto -> {
-			UserDto userDto = null;
-			try {
-				userDto = userService.getUser(pointDto.getIdUser());
-				userDto.setPassword("");
-			} catch (UserNotFoundException e) {
-				userDto = UserDto.builder()
-						.firstname("Deleted user")
-						.lastname("")
-						.email("")
-						.build();
-			} finally {
-				pointDto.setUser(userDto);
-			}
-			return pointDto;
-		}).collect(Collectors.toList());
+		return pointService.getPointsInLine(id);
 	}
 
 	@PostMapping
 	@ResponseStatus(CREATED)
 	public PointDto insertPointIntoLine(@Valid @RequestBody PointDto pointDto,
 										BindingResult bindingResult) {
-		if(bindingResult.hasErrors())
+		if(bindingResult.hasErrors()) {
 			throw new PointValidationException();
+		}
 
-		PointEntity pointEntity = pointService.insertPoint(pointDto);
-		return PointAdapter.convertToDto(pointEntity);
+		return pointService.insertPoint(PointAdapter.convertToEntity(pointDto));
 	}
 }

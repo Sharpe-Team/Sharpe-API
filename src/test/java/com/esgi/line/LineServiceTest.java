@@ -40,7 +40,7 @@ public class LineServiceTest {
 	private LineEntity line4;
 
 	@Before
-	public void initCircles() {
+	public void init_circles() {
 
 		line1 = LineEntity.builder()
 				.id(1L)
@@ -72,7 +72,7 @@ public class LineServiceTest {
 	}
 
 	@Before
-	public void configureMock() {
+	public void configure_mock() {
 
 		List<LineEntity> list = new ArrayList<>();
 		list.add(line1);
@@ -86,12 +86,12 @@ public class LineServiceTest {
 	}
 
 	@Test
-	public void shouldGetLinesOfCircle1() {
+	public void should_get_lines_of_circle_1() {
 
 		Long idCircle = 1L;
 
 		try {
-			List<LineEntity> lines = lineService.getAllLinesInCircle(idCircle);
+			List<LineDto> lines = lineService.getAllLinesInCircle(idCircle);
 
 			assertThat(lines).isNotNull();
 			assertThat(lines.size()).isEqualTo(2);
@@ -105,7 +105,7 @@ public class LineServiceTest {
 	}
 
 	@Test
-	public void shouldThrowCircleNotFoundExceptionForLinesOfCircle3() {
+	public void should_throw_CircleNotFoundException_for_lines_of_circle_3() {
 
 		Long idCircle = 3L;
 
@@ -118,12 +118,12 @@ public class LineServiceTest {
 	}
 
 	@Test
-	public void shouldGetOneLine() {
+	public void should_get_one_line() {
 
 		Long id = 3L;
 
 		try {
-			LineEntity line = lineService.getLine(id);
+			LineDto line = lineService.getLine(id);
 
 			assertThat(line).isNotNull();
 			assertThat(line.getId()).isEqualTo(line3.getId());
@@ -135,7 +135,7 @@ public class LineServiceTest {
 	}
 
 	@Test
-	public void shouldThrowLineNotFoundExceptionWithUnknownId() {
+	public void should_throw_LineNotFoundException_with_unknown_id() {
 
 		Long id = 4L;
 
@@ -148,7 +148,7 @@ public class LineServiceTest {
 	}
 
 	@Test
-	public void shouldInsertCircle() {
+	public void should_insert_circle() {
 
 		LineEntity lineEntity = LineEntity.builder()
 				.idCircle(3L)
@@ -156,9 +156,9 @@ public class LineServiceTest {
 				.announcement("The Message")
 				.build();
 
-		lineEntity = lineService.insertLine(lineEntity);
+		LineDto lineDto = lineService.insertLine(lineEntity);
 
-		assertThat(lineEntity.getId()).isEqualTo(4L);
+		assertThat(lineDto.getId()).isEqualTo(4L);
 
 		verify(lineRepository, times(1)).save(any(LineEntity.class));
 	}

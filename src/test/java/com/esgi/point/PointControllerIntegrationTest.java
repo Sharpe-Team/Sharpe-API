@@ -24,7 +24,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @PointData
 @ActiveProfiles("test")
-public class PointControllerIT {
+public class PointControllerIntegrationTest {
 
 	@LocalServerPort
 	private int localServerPort;
@@ -45,7 +45,7 @@ public class PointControllerIT {
 	}
 
 	@Test
-	public void should_insert_one_point_in_cercle() {
+	public void should_insert_one_point_in_circle() {
 		Date date = new Date();
 
 		PointDto pointDto = PointDto.builder()
@@ -69,7 +69,7 @@ public class PointControllerIT {
 	}
 
 	@Test
-	public void should_throw_PointValidationException_for_empty_iduser() {
+	public void should_throw_PointValidationException_for_empty_id_user() {
 		Date date = new Date();
 
 		PointDto pointDto = PointDto.builder()

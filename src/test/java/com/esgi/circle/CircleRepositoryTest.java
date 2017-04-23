@@ -1,6 +1,7 @@
 package com.esgi.circle;
 
 import com.esgi.user.UserData;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,9 @@ public class CircleRepositoryTest {
 	private CircleRepository circleRepository;
 
 	// No implemented methods in CircleRepository to test...
+	@Ignore
 	@Test
-	public void shoudlTestSomething() {
+	public void shoudl_test_something() {
 
 	}
 }

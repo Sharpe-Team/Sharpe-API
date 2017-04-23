@@ -1,6 +1,9 @@
 package com.esgi.point;
 
 import com.esgi.line.LineNotFoundException;
+import com.esgi.user.UserDto;
+import com.esgi.user.UserNotFoundException;
+import com.esgi.user.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -15,6 +18,7 @@ import java.util.List;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 
 /**
@@ -30,11 +34,15 @@ public class PointServiceTest {
     @Mock
     PointRepository pointRepository;
 
+    @Mock
+    UserServiceImpl userService;
+
     private PointEntity point1;
     private PointEntity point2;
     private PointEntity point3;
     private PointEntity point4;
     private PointEntity point5;
+    private UserDto userDto;
 
     public void init() {
         point1 = PointEntity.builder().id(1L)
@@ -61,10 +69,16 @@ public class PointServiceTest {
                 .idLine(1L)
                 .content("message5")
                 .build();
+
+        userDto = UserDto.builder()
+				.id(1L)
+				.email("test@test.fr")
+				.password("Azerty123")
+				.build();
     }
 
     @Before
-    public void configure() {
+    public void configure() throws UserNotFoundException {
         init();
 
         ArrayList<PointEntity> pointEntities = new ArrayList<>();
@@ -76,10 +90,12 @@ public class PointServiceTest {
 
         when(pointRepository.findByIdLine(1L)).thenReturn(pointEntities);
         when(pointRepository.save(any(PointEntity.class))).thenReturn(point5);
+
+        when(userService.getUser(anyLong())).thenReturn(userDto);
     }
 
     @Test
-    public void should_return_all_point_of_line_one() {
+    public void should_return_all_points_of_line_one() {
         List<PointDto> allPoints = null;
 
         Long idLine = 1L;
@@ -91,6 +107,8 @@ public class PointServiceTest {
         }
 
         assertThat(allPoints).hasSize(4);
+        assertThat(allPoints.get(0).getUser()).isNotNull();
+        assertThat(allPoints.get(0).getUser().getId()).isEqualTo(userDto.getId());
     }
 
     @Ignore
@@ -109,14 +127,14 @@ public class PointServiceTest {
 
     @Test
     public void should_insert_one_point() {
-        PointDto pointDtoWithoutId = PointDto.builder()
+        PointEntity pointEntity = PointEntity.builder()
                 .idLine(1L)
                 .idUser(8L)
                 .content("my message")
                 .build();
 
-        PointEntity pointEntity = pointService.insertPoint(pointDtoWithoutId);
+        PointDto pointDto = pointService.insertPoint(pointEntity);
 
-        assertThat(pointEntity.getId()).isEqualTo(5L);
+        assertThat(pointDto.getId()).isEqualTo(5L);
     }
 }

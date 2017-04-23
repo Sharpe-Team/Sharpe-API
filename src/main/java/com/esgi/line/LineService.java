@@ -17,7 +17,7 @@ public interface LineService {
 	 * @return List of Line
 	 */
 	@Transactional(readOnly = true)
-	List<LineEntity> getAllLinesInCircle(Long idCircle) throws CircleNotFoundException;
+	List<LineDto> getAllLinesInCircle(Long idCircle) throws CircleNotFoundException;
 
 	/**
 	 * Get a Line by its id.
@@ -25,7 +25,7 @@ public interface LineService {
 	 * @return the Line represented by the id
 	 */
 	@Transactional(readOnly = true)
-	LineEntity getLine(Long id) throws LineNotFoundException;
+	LineDto getLine(Long id) throws LineNotFoundException;
 
 	/**
 	 * Insert a new Line in the Repository.
@@ -33,5 +33,5 @@ public interface LineService {
 	 * @return the LineEntity with the id provided by the Repository
 	 */
 	@Transactional
-	LineEntity insertLine(LineEntity lineEntity);
+	LineDto insertLine(LineEntity lineEntity);
 }

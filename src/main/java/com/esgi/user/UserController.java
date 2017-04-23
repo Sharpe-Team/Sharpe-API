@@ -52,13 +52,7 @@ public class UserController {
 			throw new UserValidationException();
 		}
 
-		// Check if the email is already used
-		try {
-			userService.getUserByUsername(userDto.getEmail());
-			throw new EmailAddressAlreadyExistsException();
-		} catch (UserNotFoundException e) {
-			userDto = userService.insertUser(userDto);
-		}
+		return userService.insertUser(userDto);
 
 		/*
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -66,7 +60,5 @@ public class UserController {
 				.buildAndExpand(userDto.getId())
 				.toUri();
 				*/
-
-		return userDto;
 	}
 }

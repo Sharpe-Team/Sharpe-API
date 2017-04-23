@@ -46,10 +46,7 @@ public class LineController {
 	 */
 	@RequestMapping(params = {"idCircle"})
 	public List<LineDto> getAllLinesInCircle(@RequestParam("idCircle") Long idCircle) throws CircleNotFoundException {
-		return lineService.getAllLinesInCircle(idCircle)
-				.stream()
-				.map(LineAdapter::convertToDto)
-				.collect(Collectors.toList());
+		return lineService.getAllLinesInCircle(idCircle);
 	}
 
 	/**
@@ -60,7 +57,7 @@ public class LineController {
 	 */
 	@RequestMapping("/{line_id}")
 	public LineDto getLine(@PathVariable("line_id") Long id) throws LineNotFoundException {
-		return LineAdapter.convertToDto(lineService.getLine(id));
+		return lineService.getLine(id);
 	}
 
 	/**
@@ -71,20 +68,22 @@ public class LineController {
 	 */
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public ResponseEntity insertLine(@RequestBody @Valid LineDto lineDto,
+	public LineDto insertLine(@RequestBody @Valid LineDto lineDto,
 							  BindingResult bindingResult) {
 
 		if(bindingResult.hasErrors()) {
 			throw new LineValidationException();
 		}
 
-		LineEntity lineEntity = lineService.insertLine(LineAdapter.convertToEntity(lineDto));
+		return lineService.insertLine(LineAdapter.convertToEntity(lineDto));
 
+		/*
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{line_id}")
-				.buildAndExpand(lineEntity.getId())
+				.buildAndExpand(lineDto.getId())
 				.toUri();
 
 		return ResponseEntity.created(uri).build();
+		*/
 	}
 }

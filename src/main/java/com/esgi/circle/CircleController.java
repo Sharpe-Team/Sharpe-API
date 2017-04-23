@@ -1,5 +1,7 @@
 package com.esgi.circle;
 
+import com.esgi.line.LineAdapter;
+import com.esgi.line.LineDto;
 import com.esgi.line.LineEntity;
 import com.esgi.line.LineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.lang.reflect.Array;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,16 +56,20 @@ public class CircleController {
 			throw new CircleValidationException();
 		}
 
-		CircleEntity circleEntity = circleService.insertCircle(CircleAdapter.convertToEntity(circleDto));
-		LineEntity lineEntity = LineEntity.builder()
-				.idCircle(circleEntity.getId())
-				.name(circleEntity.getName())
+		circleDto = circleService.insertCircle(CircleAdapter.convertToEntity(circleDto));
+		LineDto lineDto = LineDto.builder()
+				.idCircle(circleDto.getId())
+				.name(circleDto.getName())
 				.announcement("")
 				.build();
 
-		lineEntity = lineService.insertLine(lineEntity);
+		// Add a default line for the circle
+		lineDto = lineService.insertLine(LineAdapter.convertToEntity(lineDto));
+		List<LineDto> listLines = new ArrayList<>();
+		listLines.add(lineDto);
+		circleDto.setLines(listLines);
 
-		return CircleAdapter.convertToDto(circleEntity);
+		return circleDto;
 		/*
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{circle_id}")

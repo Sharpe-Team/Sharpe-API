@@ -14,7 +14,7 @@ public interface PointService {
 	List<PointDto> getPointsInLine(Long idLine) throws LineNotFoundException;
 
 	@Transactional
-    PointEntity insertPoint(PointDto pointDto);
+    PointDto insertPoint(PointEntity pointEntity);
 
     @Transactional(readOnly = true)
     void deletePoint(Long idPoint);

@@ -37,7 +37,7 @@ public class LineControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldGetAllLinesOfCircle1() {
+	public void should_get_all_lines_of_circle1() {
 
 		Long idCircle = 1L;
 
@@ -49,7 +49,7 @@ public class LineControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldThrowCircleNotFoundExceptionWithUnknownIdCircle() {
+	public void should_throw_CircleNotFoundException_with_unknown_id_circle() {
 
 		Long idCircle = 3L;
 
@@ -60,7 +60,7 @@ public class LineControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldGetFirstLine() {
+	public void should_get_first_line() {
 		when()
 				.get("/lines/{line_id}", 1L)
 		.then()
@@ -72,7 +72,7 @@ public class LineControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldNotFoundUnknownLine() {
+	public void should_not_found_unknown_line() {
 		when()
 				.get("/lines/{line_id}", 4L)
 		.then()
@@ -80,7 +80,7 @@ public class LineControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldInsertLine() {
+	public void should_insert_line() {
 		LineDto lineDto = LineDto.builder()
 				.id(4L)
 				.idCircle(2L)
@@ -98,7 +98,7 @@ public class LineControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldThrowCircleValidationExceptionWithoutIdCircle() {
+	public void should_throw_CircleValidationException_without_id_circle() {
 		LineDto lineDto = LineDto.builder()
 				.name("line5")
 				.announcement("message5")
@@ -114,7 +114,7 @@ public class LineControllerIntegrationTest {
 	}
 
 	@Test
-	public void shouldThrowCircleValidationExceptionWithoutName() {
+	public void should_throw_CircleValidationException_without_name() {
 		LineDto lineDto = LineDto.builder()
 				.idCircle(3L)
 				.announcement("message6")

@@ -190,7 +190,11 @@ public class UserServiceTest {
 				.password("password4")
 				.build();
 
-		user = userService.insertUser(user);
+		try {
+			user = userService.insertUser(user);
+		} catch (EmailAddressAlreadyExistsException e) {
+			fail("An unexpected exception has been thrown...");
+		}
 
 		assertThat(user.getId()).isEqualTo(4);
 

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by thomasfouan on 29/03/2017.
@@ -29,9 +30,12 @@ public class LineServiceImpl implements LineService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<LineEntity> getAllLinesInCircle(Long idCircle) throws CircleNotFoundException {
+	public List<LineDto> getAllLinesInCircle(Long idCircle) throws CircleNotFoundException {
 
-		List<LineEntity> lines = lineRepository.findByIdCircle(idCircle);
+		List<LineDto> lines = lineRepository.findByIdCircle(idCircle)
+				.stream()
+				.map(LineAdapter::convertToDto)
+				.collect(Collectors.toList());
 
 		if(lines.isEmpty()) {
 			throw new CircleNotFoundException();
@@ -44,7 +48,7 @@ public class LineServiceImpl implements LineService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LineEntity getLine(Long id) throws LineNotFoundException {
+	public LineDto getLine(Long id) throws LineNotFoundException {
 
 		LineEntity line = lineRepository.findOne(id);
 
@@ -52,14 +56,14 @@ public class LineServiceImpl implements LineService {
 			throw new LineNotFoundException();
 		}
 
-		return line;
+		return LineAdapter.convertToDto(line);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LineEntity insertLine(LineEntity lineEntity) {
-		return lineRepository.save(lineEntity);
+	public LineDto insertLine(LineEntity lineEntity) {
+		return LineAdapter.convertToDto(lineRepository.save(lineEntity));
 	}
 }

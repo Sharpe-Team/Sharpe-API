@@ -53,7 +53,6 @@ public class CircleServiceImpl implements CircleService {
 	 */
 	@Override
 	public CircleDto getCircle(Long id) throws CircleNotFoundException {
-
 		CircleEntity circle = circleRepository.findOne(id);
 
 		if(circle == null) {
@@ -67,8 +66,8 @@ public class CircleServiceImpl implements CircleService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CircleEntity insertCircle(CircleEntity circleEntity) {
-		return circleRepository.save(circleEntity);
+	public CircleDto insertCircle(CircleEntity circleEntity) {
+		return CircleAdapter.convertToDto(circleRepository.save(circleEntity));
 	}
 
 	private CircleDto getCompleteCircleDto(CircleEntity circleEntity) {
