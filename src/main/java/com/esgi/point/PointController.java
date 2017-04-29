@@ -1,16 +1,12 @@
 package com.esgi.point;
 
 import com.esgi.line.LineNotFoundException;
-import com.esgi.user.UserDto;
-import com.esgi.user.UserNotFoundException;
-import com.esgi.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -21,12 +17,9 @@ public class PointController {
 
 	private PointService pointService;
 
-	private UserService userService;
-
 	@Autowired
-	public PointController(PointService pointService, UserService userService) {
+	public PointController(PointService pointService) {
 		this.pointService = pointService;
-		this.userService = userService;
 	}
 
 	@GetMapping
