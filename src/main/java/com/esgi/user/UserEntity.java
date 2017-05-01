@@ -49,7 +49,7 @@ public class UserEntity {
 	@Length(min = 8)
 	private String password;
 
-	@Column(name = "user_profile_picture")
+	@Column(name = "profile_picture")
 	private String profilePicture;
 
 	@CreationTimestamp
