@@ -29,12 +29,9 @@ public class CircleController {
 
 	private CircleService circleService;
 
-	private LineService lineService;
-
 	@Autowired
-	public CircleController(CircleService circleService, LineService lineService) {
+	public CircleController(CircleService circleService) {
 		this.circleService = circleService;
-		this.lineService = lineService;
 	}
 
 	@RequestMapping
@@ -47,6 +44,11 @@ public class CircleController {
 		return circleService.getCircle(id);
 	}
 
+	@RequestMapping(path = "/private", params = {"userId1", "userId2"})
+	public CircleDto getPrivateCircle(@PathVariable("userId1") Long id1, @PathVariable("userId2") Long id2) throws CircleNotFoundException {
+		return circleService.getPrivateCircle(id1, id2);
+	}
+
 	@PostMapping
 	@ResponseStatus(CREATED)
 	public CircleDto insertCircle(@RequestBody @Valid CircleDto circleDto,
@@ -56,20 +58,8 @@ public class CircleController {
 			throw new CircleValidationException();
 		}
 
-		circleDto = circleService.insertCircle(CircleAdapter.convertToEntity(circleDto));
-		LineDto lineDto = LineDto.builder()
-				.idCircle(circleDto.getId())
-				.name(circleDto.getName())
-				.announcement("")
-				.build();
+		return circleService.insertCircle(CircleAdapter.convertToEntity(circleDto));
 
-		// Add a default line for the circle
-		lineDto = lineService.insertLine(LineAdapter.convertToEntity(lineDto));
-		List<LineDto> listLines = new ArrayList<>();
-		listLines.add(lineDto);
-		circleDto.setLines(listLines);
-
-		return circleDto;
 		/*
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{circle_id}")

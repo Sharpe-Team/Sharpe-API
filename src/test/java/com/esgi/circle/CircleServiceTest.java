@@ -101,6 +101,8 @@ public class CircleServiceTest {
 		when(circleRepository.save(any(CircleEntity.class))).thenReturn(circle4);
 
 		when(lineRepository.findByIdCircle(1L)).thenReturn(listLine);
+
+		when(lineRepository.save(any(LineEntity.class))).thenReturn(line);
 	}
 
 	@Test
@@ -157,6 +159,8 @@ public class CircleServiceTest {
 		CircleDto circleDto = circleService.insertCircle(circleEntity);
 
 		assertThat(circleDto.getId()).isEqualTo(4L);
+		assertThat(circleDto.getLines()).hasSize(1);
+		assertThat(circleDto.getLines().get(0).getId()).isEqualTo(line.getId());
 
 		verify(circleRepository, times(1)).save(any(CircleEntity.class));
 	}

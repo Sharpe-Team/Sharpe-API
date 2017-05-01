@@ -26,6 +26,8 @@ public interface CircleService {
 	@Transactional(readOnly = true)
 	CircleDto getCircle(Long id) throws CircleNotFoundException;
 
+	CircleDto getPrivateCircle(Long userId1, Long userId2) throws CircleNotFoundException;
+
 	/**
 	 * Insert a new Circle in the Repository.
 	 * @param circleEntity the Circle to insert
