@@ -27,8 +27,6 @@ public class PointRepositoryTest {
 	public void should_return_last_tree_point_of_topic_one() {
 		List<PointEntity> pointEntities = pointRepository.findByIdLine(1L);
 
-		System.out.println(pointEntities.toString());
-
 		assertThat(pointEntities).hasSize(3);
 		assertThat(pointEntities.get(0).getId()).isEqualTo(1);
 		assertThat(pointEntities.get(0).getIdUser()).isEqualTo(1L);
@@ -45,8 +43,6 @@ public class PointRepositoryTest {
 				.build();
 
 		PointEntity entity = pointRepository.save(entityToinsert);
-
-		System.out.println(">>>>>>>>>>>" + entity.getCreated());
 
 		assertThat(entity.getId()).isEqualTo(entityToinsert.getId());
 		assertThat(entity.getIdLine()).isEqualTo(entityToinsert.getIdLine());

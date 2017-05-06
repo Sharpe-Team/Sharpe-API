@@ -1,21 +1,11 @@
 package com.esgi.circle;
 
-import com.esgi.line.LineAdapter;
-import com.esgi.line.LineDto;
-import com.esgi.line.LineEntity;
-import com.esgi.line.LineService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.lang.reflect.Array;
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -44,11 +34,6 @@ public class CircleController {
 		return circleService.getCircle(id);
 	}
 
-	@RequestMapping(path = "/private", params = {"userId1", "userId2"})
-	public CircleDto getPrivateCircle(@PathVariable("userId1") Long id1, @PathVariable("userId2") Long id2) throws CircleNotFoundException {
-		return circleService.getPrivateCircle(id1, id2);
-	}
-
 	@PostMapping
 	@ResponseStatus(CREATED)
 	public CircleDto insertCircle(@RequestBody @Valid CircleDto circleDto,
@@ -68,5 +53,15 @@ public class CircleController {
 
 		return ResponseEntity.created(uri).build();
 		*/
+	}
+
+	@RequestMapping(path = "/private")
+	public CircleDto getPrivateCircle(@RequestParam("idUser1") Long id1, @RequestParam("idUser2") Long id2) throws CircleNotFoundException {
+		return circleService.getPrivateCircle(id1, id2);
+	}
+
+	@RequestMapping(path = "/publics")
+	public List<CircleDto> getAllPublicCircle() {
+		return circleService.getAllPublicCircles();
 	}
 }

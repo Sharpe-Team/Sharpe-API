@@ -44,5 +44,16 @@ public class CircleDto {
 	 */
 	private String bannerPictureUrl;
 
+	/**
+	 * All the lines belong to the circle.
+	 */
 	private List<LineDto> lines;
+
+	/**
+	 * The type of the circle :
+	 * 		1 - public circle
+	 * 		2 - private circle
+	 */
+	@NotNull
+	private Short type;
 }

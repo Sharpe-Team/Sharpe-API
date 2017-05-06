@@ -18,6 +18,7 @@ public class CircleAdapter {
 				.name(circleEntity.getName())
 				.pictureUrl(circleEntity.getPictureUrl())
 				.bannerPictureUrl(circleEntity.getBannerPictureUrl())
+				.type(circleEntity.getType())
 				.build();
 	}
 
@@ -32,6 +33,7 @@ public class CircleAdapter {
 				.name(circleDto.getName())
 				.pictureUrl(circleDto.getPictureUrl())
 				.bannerPictureUrl(circleDto.getBannerPictureUrl())
+				.type(circleDto.getType())
 				.build();
 	}
 }

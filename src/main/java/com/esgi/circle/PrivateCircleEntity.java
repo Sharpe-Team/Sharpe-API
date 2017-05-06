@@ -26,18 +26,15 @@ public class PrivateCircleEntity {
 	@GeneratedValue
 	private Long id;
 
-	@Column
-	@NotEmpty
+	@Column(name = "id_circle")
 	@NotNull
 	private Long idCircle;
 
-	@Column
-	@NotEmpty
+	@Column(name = "id_user_1")
 	@NotNull
 	private Long idUser1;
 
-	@Column
-	@NotEmpty
+	@Column(name = "id_user_2")
 	@NotNull
 	private Long idUser2;
 }

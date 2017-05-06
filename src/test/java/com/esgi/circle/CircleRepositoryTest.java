@@ -10,6 +10,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_CLASS;
 
 /**
@@ -25,10 +28,27 @@ public class CircleRepositoryTest {
 	@Autowired
 	private CircleRepository circleRepository;
 
-	// No implemented methods in CircleRepository to test...
-	@Ignore
 	@Test
-	public void shoudl_test_something() {
+	public void shoudl_get_all_public_circles() {
+		List<CircleEntity> circleEntities = circleRepository.findAllByType((short) 1);
 
+		assertThat(circleEntities).hasSize(2);
+		assertThat(circleEntities.get(0).getId()).isEqualTo(1L);
+		assertThat(circleEntities.get(1).getId()).isEqualTo(2L);
+	}
+
+	@Test
+	public void shoudl_get_all_private_circles() {
+		List<CircleEntity> circleEntities = circleRepository.findAllByType((short) 2);
+
+		assertThat(circleEntities).hasSize(1);
+		assertThat(circleEntities.get(0).getId()).isEqualTo(3L);
+	}
+
+	@Test
+	public void shoudl_not_get_circles_for_unknown_type() {
+		List<CircleEntity> circleEntities = circleRepository.findAllByType((short) 3);
+
+		assertThat(circleEntities).hasSize(0);
 	}
 }

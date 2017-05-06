@@ -70,38 +70,6 @@ public class CircleServiceImpl implements CircleService {
 		return getCompleteCircleDto(circle);
 	}
 
-	@Override
-	public CircleDto getPrivateCircle(Long userId1, Long userId2) throws CircleNotFoundException {
-		PrivateCircleEntity privateCircleEntity;
-		List<PrivateCircleEntity> list = privateCircleRepository.findByIdUser1AndAndIdUser2(userId1, userId2);
-
-		if(list.isEmpty()) {
-			list = privateCircleRepository.findByIdUser1AndAndIdUser2(userId2, userId1);
-		}
-
-		if(list.isEmpty()) {
-			// Add a new private circle for the 2 users
-			CircleEntity circleEntity = CircleEntity.builder()
-					.name("Cercle privé")
-					.build();
-
-			CircleDto circleDto = insertCircle(circleEntity);
-
-			privateCircleEntity = PrivateCircleEntity.builder()
-					.idCircle(circleDto.getId())
-					.idUser1(userId1)
-					.idUser2(userId2)
-					.build();
-
-			privateCircleRepository.save(privateCircleEntity);
-
-			return circleDto;
-		} else {
-			privateCircleEntity = list.get(0);
-			return getCircle(privateCircleEntity.getIdCircle());
-		}
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -124,6 +92,42 @@ public class CircleServiceImpl implements CircleService {
 		return circleDto;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public CircleDto getPrivateCircle(Long idUser1, Long idUser2) throws CircleNotFoundException {
+		List<PrivateCircleEntity> list = privateCircleRepository.findByIdUser1AndAndIdUser2(idUser1, idUser2);
+
+		if(list.isEmpty()) {
+			// Switch the order of the IDs
+			list = privateCircleRepository.findByIdUser1AndAndIdUser2(idUser2, idUser1);
+		}
+
+		if(list.isEmpty()) {
+			// Add a new private circle for the 2 users
+			return addPrivateCircle(idUser1, idUser2);
+		} else {
+			return getCircle(list.get(0).getIdCircle());
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<CircleDto> getAllPublicCircles() {
+		return circleRepository.findAllByType((short) 1)
+				.stream()
+				.map(this::getCompleteCircleDto)
+				.collect(Collectors.toList());
+	}
+
+	/**
+	 * Complete the CircleEntity with its lines.
+	 * @param circleEntity the CircleEntity to complete
+	 * @return a CircleDto from the CircleEntity data
+	 */
 	private CircleDto getCompleteCircleDto(CircleEntity circleEntity) {
 
 		CircleDto circleDto = CircleAdapter.convertToDto(circleEntity);
@@ -133,6 +137,31 @@ public class CircleServiceImpl implements CircleService {
 				.collect(Collectors.toList());
 
 		circleDto.setLines(lines);
+
+		return circleDto;
+	}
+
+	/**
+	 * Add a new PrivateCircle between 2 users.
+	 * @param idUser1 the first user
+	 * @param idUser2 the second user
+	 * @return a new Circle for their PrivateCircle
+	 */
+	private CircleDto addPrivateCircle(Long idUser1, Long idUser2) {
+		CircleEntity circleEntity = CircleEntity.builder()
+				.name("Cercle privé")
+				.type((short) 2)
+				.build();
+
+		CircleDto circleDto = insertCircle(circleEntity);
+
+		PrivateCircleEntity privateCircleEntity = PrivateCircleEntity.builder()
+				.idCircle(circleDto.getId())
+				.idUser1(idUser1)
+				.idUser2(idUser2)
+				.build();
+
+		privateCircleRepository.save(privateCircleEntity);
 
 		return circleDto;
 	}

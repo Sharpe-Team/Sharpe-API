@@ -1,0 +1,1 @@
+delete from private_circle;

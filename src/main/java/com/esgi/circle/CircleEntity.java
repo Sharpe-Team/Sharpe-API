@@ -47,4 +47,13 @@ public class CircleEntity {
 	 */
 	@Column(name = "banner_picture_url")
 	private String bannerPictureUrl;
+
+	/**
+	 * The type of the Circle :
+	 * 		1 - public circle
+	 * 		2 - private circle
+	 */
+	@Column
+	@NotNull
+	private Short type;
 }

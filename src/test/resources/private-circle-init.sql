@@ -1,0 +1,1 @@
+insert into private_circle (id, id_circle, id_user_1, id_user_2) values (1, 3, 1, 2);
