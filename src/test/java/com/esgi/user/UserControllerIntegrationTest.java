@@ -92,6 +92,7 @@ public class UserControllerIntegrationTest {
 				.email("fourth@email.com")
 				.password("password4")
 				.profilePicture("url/picture4.png")
+				.admin((short) 0)
 				.created(date)
 				.updated(date)
 				.build();

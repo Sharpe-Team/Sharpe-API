@@ -52,6 +52,9 @@ public class UserEntity {
 	@Column(name = "profile_picture")
 	private String profilePicture;
 
+	@Column(name = "administrator")
+	private short admin;
+
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)

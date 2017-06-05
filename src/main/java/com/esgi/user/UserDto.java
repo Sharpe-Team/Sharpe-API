@@ -42,6 +42,9 @@ public class UserDto {
     private String password;
 
     private String profilePicture;
+
+    private short admin;
+
     private Date created;
     private Date updated;
 }

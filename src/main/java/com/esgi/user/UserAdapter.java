@@ -17,6 +17,7 @@ public class UserAdapter {
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
                 .profilePicture(userDto.getProfilePicture())
+                .admin(userDto.getAdmin())
                 .created(userDto.getCreated())
                 .updated(userDto.getUpdated())
                 .build();
@@ -30,6 +31,7 @@ public class UserAdapter {
                 .email(userEntity.getEmail())
                 .password(userEntity.getPassword())
                 .profilePicture(userEntity.getProfilePicture())
+                .admin(userEntity.getAdmin())
                 .created(userEntity.getCreated())
                 .updated(userEntity.getUpdated())
                 .build();
