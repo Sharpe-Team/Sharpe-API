@@ -53,6 +53,8 @@ public class RoleServiceTest {
 	@Before
 	public void configureMock() {
 
+		initRoles();
+
 		List<RoleEntity> list = new ArrayList<>();
 		list.add(roleEntity1);
 		list.add(roleEntity2);
@@ -141,13 +143,5 @@ public class RoleServiceTest {
 		assertThat(roleDto.getName()).isEqualTo(roleEntity3.getName());
 
 		verify(roleRepository, times(1)).save(any(RoleEntity.class));
-	}
-
-	@Test
-	public void should_not_insert_role_without_name() {
-		RoleDto roleDto = RoleDto.builder()
-				.build();
-
-		roleDto = roleService.insertRole(roleDto);
 	}
 }

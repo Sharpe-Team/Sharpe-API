@@ -86,7 +86,7 @@ public class UserControllerIntegrationTest {
 	public void should_insert_user() {
 		Date date = new Date();
 
-		UserEntity user = UserEntity.builder()
+		UserDto user = UserDto.builder()
 				.firstname("fourth")
 				.lastname("lastname4")
 				.email("fourth@email.com")
@@ -110,7 +110,7 @@ public class UserControllerIntegrationTest {
 	public void should_throw_UserValidationException_for_empty_username() {
 		Date date = new Date();
 
-		UserEntity user = UserEntity.builder()
+		UserDto user = UserDto.builder()
 				.firstname("")
 				.lastname("lastname4")
 				.email("fourth@email.com")
@@ -131,7 +131,8 @@ public class UserControllerIntegrationTest {
 	@Test
 	public void should_throw_UserValidationException_for_empty_password() {
 		Date date = new Date();
-		UserEntity user = UserEntity.builder()
+
+		UserDto user = UserDto.builder()
 				.firstname("fourth")
 				.lastname("lastname4")
 				.email("fourth@email.com")
@@ -154,7 +155,7 @@ public class UserControllerIntegrationTest {
 	public void should_throw_UserValidationException_for_short_password() {
 		Date date = new Date();
 
-		UserEntity user = UserEntity.builder()
+		UserDto user = UserDto.builder()
 				.firstname("fourth")
 				.lastname("lastname4")
 				.email("fourthemail.com")
@@ -179,7 +180,7 @@ public class UserControllerIntegrationTest {
 
 		String invalidEmail = "fourthemail.com";
 
-		UserEntity user = UserEntity.builder()
+		UserDto user = UserDto.builder()
 				.firstname("fourth")
 				.lastname("lastname4")
 				.email(invalidEmail)
