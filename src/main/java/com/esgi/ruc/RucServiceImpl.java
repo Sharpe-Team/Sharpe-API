@@ -81,6 +81,7 @@ public class RucServiceImpl implements RucService {
 		return RucAdapter.entityToDto(rucEntity);
 	}
 
+	@Override
 	public RucDto insertLink(RucDto rucDto) {
 		RucEntity rucEntity = RucAdapter.dtoToEntity(rucDto);
 
@@ -89,10 +90,12 @@ public class RucServiceImpl implements RucService {
 		return RucAdapter.entityToDto(rucEntity);
 	}
 
+	@Override
 	public void deleteLink(Long idUser, Long idCircle) {
 		rucRepository.deleteAllByIdUserAndIdCircle(idUser, idCircle);
 	}
 
+	@Override
 	public RucDto updateRole(Long idUser, Long idCircle, Long newIdRole) throws RucNotFoundException {
 		// Find link
 		RucDto rucDto = getLinkByUserAndCircle(idUser, idCircle);
@@ -111,6 +114,7 @@ public class RucServiceImpl implements RucService {
 		return RucAdapter.entityToDto(rucEntity);
 	}
 
+	@Override
 	public RucDto updateRole(Long idUser, Long idCircle, String newRoleName) throws RucNotFoundException, RoleNotFoundException {
 		// Find link
 		RucDto rucDto = getLinkByUserAndCircle(idUser, idCircle);
