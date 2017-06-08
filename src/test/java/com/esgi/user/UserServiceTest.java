@@ -23,17 +23,14 @@ import static org.mockito.Mockito.*;
 public class UserServiceTest {
 
 	@InjectMocks
-	UserServiceImpl userService;
+	private UserServiceImpl userService;
 
 	@Mock
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	private UserEntity user1;
-
 	private UserEntity user2;
-
 	private UserEntity user3;
-
 	private UserEntity user4;
 
 	private Date date;
@@ -103,13 +100,9 @@ public class UserServiceTest {
 		list.add(user3);
 
 		when(userRepository.findAll()).thenReturn(list);
-
 		when(userRepository.findOne(user2.getId())).thenReturn(user2);
-
 		when(userRepository.findOne(4L)).thenReturn(null);
-
 		when(userRepository.findByFirstname("fourth")).thenReturn(new ArrayList<>());
-
 		when(userRepository.save(any(UserEntity.class))).thenReturn(user4);
 	}
 
@@ -135,7 +128,7 @@ public class UserServiceTest {
 			assertThat(user.getFirstname()).isEqualTo(user2.getFirstname());
 			assertThat(user.getPassword()).isEqualTo(user2.getPassword());
 		} catch (UserNotFoundException e) {
-			fail("Test failed : an unexpected exception has been thrown when trying to retrieve on user with id = " + id);
+			fail("Test failed : an unexpected exception has been thrown when trying to retrieve one user with id = " + id);
 		}
 	}
 

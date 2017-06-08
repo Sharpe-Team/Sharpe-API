@@ -14,7 +14,6 @@ import java.util.Date;
 /**
  * Created by rfruitet on 07/03/2017.
  */
-
 @Data
 @Builder
 @NoArgsConstructor

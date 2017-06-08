@@ -8,6 +8,7 @@ import java.util.List;
  * Created by thomasfouan on 04/03/2017.
  */
 public interface UserService {
+
 	@Transactional(readOnly = true)
 	List<UserDto> getAllUsers();
 
