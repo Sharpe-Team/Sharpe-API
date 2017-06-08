@@ -52,7 +52,7 @@ public class UserControllerIntegrationTest {
 				.statusCode(200)
 				.body("id", is(1))
 				.body("firstname", is("first"))
-				.body("password", is("password1"));
+				.body("password", is(""));
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class UserControllerIntegrationTest {
 				.statusCode(200)
 				.body("id", is(2))
 				.body("firstname", is("second"))
-				.body("password", is("password2"));
+				.body("password", is(""));
 	}
 
 	@Test

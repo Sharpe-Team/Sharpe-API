@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by rfruitet on 07/03/2017.
@@ -46,4 +47,6 @@ public class UserDto {
 
     private Date created;
     private Date updated;
+
+    private HashMap<Long, String> circlesRole;
 }

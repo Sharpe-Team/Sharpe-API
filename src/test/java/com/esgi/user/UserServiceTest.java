@@ -1,5 +1,9 @@
 package com.esgi.user;
 
+import com.esgi.role.RoleEntity;
+import com.esgi.role.RoleRepository;
+import com.esgi.ruc.RucEntity;
+import com.esgi.ruc.RucRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,12 +32,21 @@ public class UserServiceTest {
 	@Mock
 	private UserRepository userRepository;
 
+	@Mock
+	private RucRepository rucRepository;
+
+	@Mock
+	private RoleRepository roleRepository;
+
 	private UserEntity user1;
 	private UserEntity user2;
 	private UserEntity user3;
 	private UserEntity user4;
 
 	private Date date;
+
+	private RucEntity rucEntity;
+	private RoleEntity roleEntity;
 
 	public void initUsers() {
 
@@ -82,13 +95,25 @@ public class UserServiceTest {
 				.created(date)
 				.updated(date)
 				.build();
+
+		rucEntity = RucEntity.builder()
+				.id(1L)
+				.idRole(1L)
+				.idUser(1L)
+				.idCircle(1L)
+				.build();
+
+		roleEntity = RoleEntity.builder()
+				.id(1L)
+				.name("USER")
+				.build();
 	}
 
 	@Before
 	public void configureMock() {
 		initUsers();
 
-		ArrayList<UserEntity> list = new ArrayList<>();
+		List<UserEntity> list = new ArrayList<>();
 		list.add(user3);
 
 		when(userRepository.findByFirstname(user3.getFirstname())).thenReturn(list);
@@ -103,6 +128,13 @@ public class UserServiceTest {
 		when(userRepository.findOne(4L)).thenReturn(null);
 		when(userRepository.findByFirstname("fourth")).thenReturn(new ArrayList<>());
 		when(userRepository.save(any(UserEntity.class))).thenReturn(user4);
+
+		List<RucEntity> listRuc = new ArrayList<>();
+		listRuc.add(rucEntity);
+
+		when(rucRepository.findByIdUser(2L)).thenReturn(listRuc);
+		when(rucRepository.findByIdUser(3L)).thenReturn(listRuc);
+		when(roleRepository.findOne(1L)).thenReturn(roleEntity);
 	}
 
 	@Test
@@ -123,7 +155,10 @@ public class UserServiceTest {
 			assertThat(user).isNotNull();
 			assertThat(user.getId()).isEqualTo(user2.getId());
 			assertThat(user.getFirstname()).isEqualTo(user2.getFirstname());
-			assertThat(user.getPassword()).isEqualTo(user2.getPassword());
+			assertThat(user.getPassword()).isEqualTo("");
+			assertThat(user.getCirclesRole()).isNotNull();
+			assertThat(user.getCirclesRole().size()).isEqualTo(1);
+			assertThat(user.getCirclesRole().get(1L)).isEqualTo(roleEntity.getName());
 		} catch (UserNotFoundException e) {
 			fail("Test failed : an unexpected exception has been thrown when trying to retrieve one user with id = " + id);
 		}
@@ -151,7 +186,10 @@ public class UserServiceTest {
 			assertThat(user).isNotNull();
 			assertThat(user.getId()).isEqualTo(user3.getId());
 			assertThat(user.getFirstname()).isEqualTo(user3.getFirstname());
-			assertThat(user.getPassword()).isEqualTo(user3.getPassword());
+			assertThat(user.getPassword()).isEqualTo("");
+			assertThat(user.getCirclesRole()).isNotNull();
+			assertThat(user.getCirclesRole().size()).isEqualTo(1);
+			assertThat(user.getCirclesRole().get(1L)).isEqualTo(roleEntity.getName());
 		} catch (UserNotFoundException e) {
 			fail("Test failed : an unexpected exception has been thrown when trying to retrieve one user with username = '" + username + "'");
 		}
@@ -178,13 +216,14 @@ public class UserServiceTest {
 
 		try {
 			user = userService.insertUser(user);
+
+			assertThat(user.getId()).isEqualTo(4);
+			assertThat(user.getCirclesRole()).isNotNull();
+			assertThat(user.getCirclesRole().size()).isEqualTo(0);
+			verify(userRepository, times(1)).save(any(UserEntity.class));
 		} catch (EmailAddressAlreadyExistsException e) {
 			fail("An unexpected exception has been thrown...");
 		}
-
-		assertThat(user.getId()).isEqualTo(4);
-
-		verify(userRepository, times(1)).save(any(UserEntity.class));
 	}
 }
 

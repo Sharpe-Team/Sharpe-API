@@ -1,10 +1,13 @@
 package com.esgi.user;
 
+import com.esgi.role.RoleRepository;
+import com.esgi.ruc.RucEntity;
+import com.esgi.ruc.RucRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,21 +19,22 @@ public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 
+	private final RucRepository rucRepository;
+
+	private final RoleRepository roleRepository;
+
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository) {
+	public UserServiceImpl(UserRepository userRepository, RucRepository rucRepository, RoleRepository roleRepository) {
 		this.userRepository = userRepository;
+		this.rucRepository = rucRepository;
+		this.roleRepository = roleRepository;
 	}
 
 	@Override
 	public List<UserDto> getAllUsers() {
 		return userRepository.findAll()
 				.stream()
-				.map((user) -> {
-					UserDto userDto = UserAdapter.entityToDto(user);
-					// Hide password
-					userDto.setPassword("");
-					return userDto;
-				})
+				.map(this::getCompleteUserDto)
 				.collect(Collectors.toList());
 	}
 
@@ -42,7 +46,7 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException();
 		}
 
-		return UserAdapter.entityToDto(user);
+		return getCompleteUserDto(user);
 	}
 
 	@Override
@@ -51,7 +55,7 @@ public class UserServiceImpl implements UserService {
 				.stream()
 				.findFirst()
 				.orElseThrow(UserNotFoundException::new);
-		return UserAdapter.entityToDto(userEntity);
+		return getCompleteUserDto(userEntity);
 	}
 
 	@Override
@@ -70,6 +74,24 @@ public class UserServiceImpl implements UserService {
 			userEntity = userRepository.save(userEntity);
 		}
 
-		return UserAdapter.entityToDto(userEntity);
+		return getCompleteUserDto(userEntity);
+	}
+
+	private UserDto getCompleteUserDto(UserEntity userEntity) {
+		UserDto userDto = UserAdapter.entityToDto(userEntity);
+		// Hide password
+		userDto.setPassword("");
+
+		HashMap<Long, String> roleForCircle = new HashMap<>();
+
+		List<RucEntity> links = rucRepository.findByIdUser(userDto.getId());
+		for (RucEntity ruc : links) {
+			String roleName = roleRepository.findOne(ruc.getIdRole()).getName();
+			roleForCircle.put(ruc.getIdCircle(), roleName);
+		}
+
+		userDto.setCirclesRole(roleForCircle);
+
+		return userDto;
 	}
 }
