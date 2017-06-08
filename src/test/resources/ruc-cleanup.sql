@@ -1,0 +1,1 @@
+delete from link_role_user_circle;

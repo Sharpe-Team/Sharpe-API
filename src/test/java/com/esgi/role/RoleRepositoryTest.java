@@ -25,7 +25,6 @@ public class RoleRepositoryTest {
 
 	@Test
 	public void should_get_one_role_by_name() {
-
 		String name = "USER";
 
 		List<RoleEntity> roles = roleRepository.findByName(name);
@@ -36,7 +35,6 @@ public class RoleRepositoryTest {
 
 	@Test
 	public void should_not_get_role_for_unknown_role_name() {
-
 		String name = "BLABLA";
 
 		List<RoleEntity> roles = roleRepository.findByName(name);

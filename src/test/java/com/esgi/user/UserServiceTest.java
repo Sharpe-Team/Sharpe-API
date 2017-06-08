@@ -86,7 +86,6 @@ public class UserServiceTest {
 
 	@Before
 	public void configureMock() {
-
 		initUsers();
 
 		ArrayList<UserEntity> list = new ArrayList<>();
@@ -108,7 +107,6 @@ public class UserServiceTest {
 
 	@Test
 	public void should_get_all_users() {
-
 		List<UserDto> allUsers = userService.getAllUsers();
 
 		assertThat(allUsers).hasSize(3);
@@ -116,7 +114,6 @@ public class UserServiceTest {
 
 	@Test
 	public void should_get_one_user_with_id() {
-
 		Long id = user2.getId();
 
 		UserDto user;
@@ -134,7 +131,6 @@ public class UserServiceTest {
 
 	@Test
 	public void should_throw_UserNotFoundException_with_unknown_id() {
-
 		Long id = 4L;
 
 		try {
@@ -147,7 +143,6 @@ public class UserServiceTest {
 
 	@Test
 	public void should_get_one_user_by_firstname() {
-
 		String username = user3.getFirstname();
 
 		try {
@@ -164,7 +159,6 @@ public class UserServiceTest {
 
 	@Test
 	public void should_throw_UserNotFoundException_with_unknown_firstname() {
-
 		String username = "fourth";
 
 		try {
@@ -177,7 +171,6 @@ public class UserServiceTest {
 
 	@Test
 	public void should_insert_user() {
-
 		UserDto user = UserDto.builder()
 				.firstname("fourth")
 				.password("password4")
