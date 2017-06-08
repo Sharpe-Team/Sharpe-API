@@ -91,8 +91,11 @@ public class RucServiceImpl implements RucService {
 	}
 
 	@Override
-	public void deleteLink(Long idUser, Long idCircle) {
-		rucRepository.deleteAllByIdUserAndIdCircle(idUser, idCircle);
+	public List<RucDto> deleteLink(Long idUser, Long idCircle) {
+		return rucRepository.deleteAllByIdUserAndIdCircle(idUser, idCircle)
+				.stream()
+				.map(RucAdapter::entityToDto)
+				.collect(Collectors.toList());
 	}
 
 	@Override

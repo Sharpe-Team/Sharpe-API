@@ -35,7 +35,7 @@ public interface RucService {
 	RucDto insertLink(RucDto rucDto);
 
 	@Transactional
-	void deleteLink(Long idUser, Long idCircle);
+	List<RucDto> deleteLink(Long idUser, Long idCircle);
 
 	@Transactional
 	RucDto updateRole(Long idUser, Long idCircle, Long newIdRole) throws RucNotFoundException;

@@ -2,6 +2,7 @@ package com.esgi.ruc;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,5 +24,6 @@ public interface RucRepository extends JpaRepository<RucEntity, Long> {
 
 	List<RucEntity> findByIdUserAndIdCircle(Long idUser, Long idCircle);
 
-	void deleteAllByIdUserAndIdCircle(Long idUser, Long idCircle);
+	@Transactional
+	List<RucEntity> deleteAllByIdUserAndIdCircle(Long idUser, Long idCircle);
 }

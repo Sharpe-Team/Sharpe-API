@@ -119,5 +119,8 @@ public class RucRepositoryTest {
 		Long idCircle = 1L;
 
 		rucRepository.deleteAllByIdUserAndIdCircle(idUser, idCircle);
+
+		List<RucEntity> rucs = rucRepository.findAll();
+		assertThat(rucs).hasSize(3);
 	}
 }

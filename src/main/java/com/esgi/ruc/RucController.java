@@ -14,7 +14,7 @@ import static org.springframework.http.HttpStatus.CREATED;
  * Created by thomasfouan on 08/06/2017.
  */
 @RestController
-@RequestMapping("/ruc")
+@RequestMapping("/rucs")
 @CrossOrigin
 public class RucController {
 
@@ -72,8 +72,8 @@ public class RucController {
 	}
 
 	@DeleteMapping(params = {"user_id", "circle_id"})
-	public void deleteLink(@RequestParam("user_id") Long idUser, @RequestParam("circle_id") Long idCircle) {
-		rucService.deleteLink(idUser, idCircle);
+	public List<RucDto> deleteLink(@RequestParam("user_id") Long idUser, @RequestParam("circle_id") Long idCircle) {
+		return rucService.deleteLink(idUser, idCircle);
 	}
 
 	@PutMapping(params = {"user_id", "circle_id", "role_id"})
