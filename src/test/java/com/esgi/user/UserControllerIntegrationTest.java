@@ -4,6 +4,7 @@ import com.esgi.role.RoleData;
 import com.esgi.ruc.RucData;
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.context.embedded.LocalServerPort;
@@ -205,5 +206,14 @@ public class UserControllerIntegrationTest {
 				.post("/users/subscribe")
 		.then()
 				.statusCode(400);
+	}
+
+	@Test
+	public void should_delete_user() {
+
+		when()
+				.delete("/users/{user_id}", 1L)
+		.then()
+				.statusCode(204);
 	}
 }

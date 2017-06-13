@@ -225,5 +225,12 @@ public class UserServiceTest {
 			fail("An unexpected exception has been thrown...");
 		}
 	}
+
+	@Test
+	public void should_delete_user() {
+		userService.deleteUser(user1.getId());
+
+		verify(userRepository, times(1)).delete(user1.getId());
+	}
 }
 
