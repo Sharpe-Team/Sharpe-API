@@ -114,4 +114,13 @@ public class PointControllerIntegrationTest {
 				.all()
 				.statusCode(400);
 	}
+
+	@Test
+	public void should_delete_point() {
+
+		when()
+				.delete("/points/{point_id}", 1L)
+		.then()
+				.statusCode(204);
+	}
 }
