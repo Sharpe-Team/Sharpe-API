@@ -1,5 +1,7 @@
 package com.esgi.user;
 
+import com.esgi.role.RoleData;
+import com.esgi.ruc.RucData;
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +26,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @UserData
+@RucData
+@RoleData
 @ActiveProfiles("test")
 public class UserControllerIntegrationTest {
 
@@ -52,7 +56,9 @@ public class UserControllerIntegrationTest {
 				.statusCode(200)
 				.body("id", is(1))
 				.body("firstname", is("first"))
-				.body("password", is(""));
+				.body("password", is(""))
+				.body("circlesRole.1", is("USER"))
+				.body("circlesRole.2", is("MODERATOR"));
 	}
 
 	@Test
@@ -71,7 +77,9 @@ public class UserControllerIntegrationTest {
 				.statusCode(200)
 				.body("id", is(2))
 				.body("firstname", is("second"))
-				.body("password", is(""));
+				.body("password", is(""))
+				.body("circlesRole.1", is("MODERATOR"))
+				.body("circlesRole.2", is("USER"));
 	}
 
 	@Test
