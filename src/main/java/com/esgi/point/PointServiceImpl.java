@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 /**
  * Created by rfruitet on 08/03/2017.
  */
-
 @Service
 public class PointServiceImpl implements PointService {
 
@@ -29,12 +28,10 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public List<PointDto> getPointsInLine(Long idLine) throws LineNotFoundException {
-        List<PointDto> pointDtoList = pointRepository.findByIdLine(idLine)
+        return pointRepository.findByIdLine(idLine)
                 .stream()
                 .map(this::getCompletePointDto)
                 .collect(Collectors.toList());
-
-        return pointDtoList;
     }
 
     @Override

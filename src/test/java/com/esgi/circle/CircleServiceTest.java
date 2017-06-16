@@ -48,7 +48,6 @@ public class CircleServiceTest {
 
 	private PrivateCircleEntity privateCircle;
 
-	@Before
 	public void init_circles() {
 
 		circle1 = CircleEntity.builder()
@@ -106,6 +105,7 @@ public class CircleServiceTest {
 
 	@Before
 	public void configure_mock() {
+		init_circles();
 
 		List<CircleEntity> list = new ArrayList<>();
 		list.add(circle1);

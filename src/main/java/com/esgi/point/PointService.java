@@ -16,6 +16,6 @@ public interface PointService {
 	@Transactional
     PointDto insertPoint(PointEntity pointEntity);
 
-    @Transactional(readOnly = true)
+    @Transactional
     void deletePoint(Long idPoint);
 }
