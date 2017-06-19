@@ -29,9 +29,9 @@ public interface LineService {
 
 	/**
 	 * Insert a new Line in the Repository.
-	 * @param lineEntity the Line to insert
+	 * @param lineDto the Line to insert
 	 * @return the LineEntity with the id provided by the Repository
 	 */
 	@Transactional
-	LineDto insertLine(LineEntity lineEntity);
+	LineDto insertLine(LineDto lineDto);
 }

@@ -36,7 +36,7 @@ public class PointController {
 			throw new PointValidationException();
 		}
 
-		return pointService.insertPoint(PointAdapter.convertToEntity(pointDto));
+		return pointService.insertPoint(pointDto);
 	}
 
 	@DeleteMapping("/{point_id}")

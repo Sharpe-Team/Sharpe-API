@@ -75,7 +75,7 @@ public class LineController {
 			throw new LineValidationException();
 		}
 
-		return lineService.insertLine(LineAdapter.convertToEntity(lineDto));
+		return lineService.insertLine(lineDto);
 
 		/*
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()

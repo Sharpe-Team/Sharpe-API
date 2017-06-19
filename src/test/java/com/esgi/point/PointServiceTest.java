@@ -122,20 +122,20 @@ public class PointServiceTest {
         try {
             pointService.getPointsInLine(idLineUnknown);
 
-            fail("Test failed : an exception should have been thrown when trying to acceszs cercle with id = " + idLineUnknown);
+            fail("Test failed : an exception should have been thrown when trying to access cercle with id = " + idLineUnknown);
         } catch (LineNotFoundException e) {
         }
     }
 
     @Test
     public void should_insert_one_point() {
-        PointEntity pointEntity = PointEntity.builder()
+        PointDto pointDto = PointDto.builder()
                 .idLine(1L)
                 .idUser(8L)
                 .content("my message")
                 .build();
 
-        PointDto pointDto = pointService.insertPoint(pointEntity);
+        pointDto = pointService.insertPoint(pointDto);
 
         assertThat(pointDto.getId()).isEqualTo(5L);
     }

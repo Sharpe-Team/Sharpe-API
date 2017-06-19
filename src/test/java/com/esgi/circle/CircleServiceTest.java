@@ -2,6 +2,10 @@ package com.esgi.circle;
 
 import com.esgi.line.LineEntity;
 import com.esgi.line.LineRepository;
+import com.esgi.role.RoleEntity;
+import com.esgi.role.RoleRepository;
+import com.esgi.ruc.RucEntity;
+import com.esgi.ruc.RucRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +42,12 @@ public class CircleServiceTest {
 	@Mock
 	private PrivateCircleRepository privateCircleRepository;
 
+	@Mock
+	private RucRepository rucRepository;
+
+	@Mock
+	private RoleRepository roleRepository;
+
 	private CircleEntity circle1;
 	private CircleEntity circle2;
 	private CircleEntity circle3;
@@ -47,6 +57,11 @@ public class CircleServiceTest {
 	private LineEntity line;
 
 	private PrivateCircleEntity privateCircle;
+
+	private RucEntity rucEntity1;
+	private RucEntity rucEntity2;
+
+	private RoleEntity roleEntity;
 
 	public void init_circles() {
 
@@ -101,6 +116,25 @@ public class CircleServiceTest {
 				.idUser1(1L)
 				.idUser2(2L)
 				.build();
+
+		rucEntity1 = RucEntity.builder()
+				.id(1L)
+				.idCircle(4L)
+				.idUser(1L)
+				.idRole(2L)
+				.build();
+
+		rucEntity2 = RucEntity.builder()
+				.id(2L)
+				.idCircle(4L)
+				.idUser(2L)
+				.idRole(2L)
+				.build();
+
+		roleEntity = RoleEntity.builder()
+				.id(2L)
+				.name("MODERATOR")
+				.build();
 	}
 
 	@Before
@@ -114,6 +148,9 @@ public class CircleServiceTest {
 
 		List<LineEntity> listLine = new ArrayList<>();
 		listLine.add(line);
+
+		List<RoleEntity> listRole = new ArrayList<>();
+		listRole.add(roleEntity);
 
 		List<PrivateCircleEntity> listPrivateCircle = new ArrayList<>();
 		listPrivateCircle.add(privateCircle);
@@ -129,6 +166,10 @@ public class CircleServiceTest {
 
 		when(privateCircleRepository.findByIdUser1AndAndIdUser2(1L, 2L)).thenReturn(listPrivateCircle);
 		when(privateCircleRepository.save(any(PrivateCircleEntity.class))).thenReturn(privateCircle);
+
+		when(rucRepository.save(any(RucEntity.class))).thenReturn(rucEntity1, rucEntity2);
+
+		when(roleRepository.findByName("MODERATOR")).thenReturn(listRole);
 	}
 
 	@Test
@@ -175,20 +216,27 @@ public class CircleServiceTest {
 
 	@Test
 	public void should_insert_circle() {
+		List<Long> moderatorsId = new ArrayList<>();
+		moderatorsId.add(1L);
+		moderatorsId.add(2L);
 
-		CircleEntity circleEntity = CircleEntity.builder()
+		CircleDto circleDto = CircleDto.builder()
 				.name("new Entity")
 				.pictureUrl("new-picture.png")
 				.bannerPictureUrl("new-banner-picture.png")
+				.moderatorsId(moderatorsId)
 				.build();
 
-		CircleDto circleDto = circleService.insertCircle(circleEntity);
+		circleDto = circleService.insertCircle(circleDto);
 
 		assertThat(circleDto.getId()).isEqualTo(4L);
 		assertThat(circleDto.getLines()).hasSize(1);
 		assertThat(circleDto.getLines().get(0).getId()).isEqualTo(line.getId());
 
 		verify(circleRepository, times(1)).save(any(CircleEntity.class));
+		verify(lineRepository, times(1)).save(any(LineEntity.class));
+		verify(rucRepository, times(2)).save(any(RucEntity.class));
+		verify(roleRepository, times(1)).findByName("MODERATOR");
 	}
 
 	@Test

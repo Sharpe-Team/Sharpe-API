@@ -28,11 +28,11 @@ public interface CircleService {
 
 	/**
 	 * Insert a new Circle in the Repository.
-	 * @param circleEntity the Circle to insert
+	 * @param circleDto the Circle to insert
 	 * @return the CircleEntity with the id provided by the Repository
 	 */
 	@Transactional
-	CircleDto insertCircle(CircleEntity circleEntity);
+	CircleDto insertCircle(CircleDto circleDto);
 
 	/**
 	 * Get the private circle between the 2 users.

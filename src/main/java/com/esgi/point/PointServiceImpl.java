@@ -35,7 +35,8 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
-    public PointDto insertPoint(PointEntity pointEntity) {
+    public PointDto insertPoint(PointDto pointDto) {
+        PointEntity pointEntity = PointAdapter.convertToEntity(pointDto);
 		return this.getCompletePointDto(pointRepository.save(pointEntity));
     }
 
