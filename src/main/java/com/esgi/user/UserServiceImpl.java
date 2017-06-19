@@ -77,6 +77,11 @@ public class UserServiceImpl implements UserService {
 		return getCompleteUserDto(userEntity);
 	}
 
+	@Override
+	public void deleteUser(Long id) {
+		userRepository.delete(id);
+	}
+
 	private UserDto getCompleteUserDto(UserEntity userEntity) {
 		UserDto userDto = UserAdapter.entityToDto(userEntity);
 		// Hide password

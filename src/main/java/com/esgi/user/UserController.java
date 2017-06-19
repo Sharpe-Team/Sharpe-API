@@ -12,6 +12,7 @@ import java.net.URI;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 /**
  * Created by thomasfouan on 04/03/2017.
@@ -60,5 +61,11 @@ public class UserController {
 				.buildAndExpand(userDto.getId())
 				.toUri();
 				*/
+	}
+
+	@DeleteMapping("/{user_id}")
+	@ResponseStatus(NO_CONTENT)
+	public void deleteUser(@PathVariable("user_id") Long id) {
+		userService.deleteUser(id);
 	}
 }

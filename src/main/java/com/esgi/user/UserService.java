@@ -20,4 +20,7 @@ public interface UserService {
 
 	@Transactional
 	UserDto insertUser(UserDto userDto) throws EmailAddressAlreadyExistsException;
+
+	@Transactional
+	void deleteUser(Long id);
 }

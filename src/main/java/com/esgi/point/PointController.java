@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/points")
@@ -37,4 +38,11 @@ public class PointController {
 
 		return pointService.insertPoint(pointDto);
 	}
+
+	@DeleteMapping("/{point_id}")
+	@ResponseStatus(NO_CONTENT)
+	public void deletePoint(@PathVariable("point_id") Long id) {
+		pointService.deletePoint(id);
+	}
+
 }

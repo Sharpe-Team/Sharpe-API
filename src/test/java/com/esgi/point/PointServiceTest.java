@@ -19,6 +19,8 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -136,5 +138,12 @@ public class PointServiceTest {
         pointDto = pointService.insertPoint(pointDto);
 
         assertThat(pointDto.getId()).isEqualTo(5L);
+    }
+
+    @Test
+    public void should_delete_point() {
+        pointService.deletePoint(point1.getId());
+
+        verify(pointRepository, times(1)).delete(point1.getId());
     }
 }
