@@ -63,7 +63,9 @@ public class LineServiceImpl implements LineService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LineDto insertLine(LineEntity lineEntity) {
+	public LineDto insertLine(LineDto lineDto) {
+		LineEntity lineEntity = LineAdapter.convertToEntity(lineDto);
+
 		return LineAdapter.convertToDto(lineRepository.save(lineEntity));
 	}
 }

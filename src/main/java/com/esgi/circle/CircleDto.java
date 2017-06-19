@@ -1,6 +1,7 @@
 package com.esgi.circle;
 
 import com.esgi.line.LineDto;
+import com.esgi.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -56,4 +57,6 @@ public class CircleDto {
 	 */
 	@NotNull
 	private Short type;
+
+	private List<Long> moderatorsId;
 }

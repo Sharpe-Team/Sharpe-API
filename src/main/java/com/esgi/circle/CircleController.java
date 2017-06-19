@@ -43,7 +43,7 @@ public class CircleController {
 			throw new CircleValidationException();
 		}
 
-		return circleService.insertCircle(CircleAdapter.convertToEntity(circleDto));
+		return circleService.insertCircle(circleDto);
 
 		/*
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()

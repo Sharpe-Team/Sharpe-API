@@ -150,13 +150,13 @@ public class LineServiceTest {
 	@Test
 	public void should_insert_circle() {
 
-		LineEntity lineEntity = LineEntity.builder()
+		LineDto lineDto = LineDto.builder()
 				.idCircle(3L)
 				.name("new Entity")
 				.announcement("The Message")
 				.build();
 
-		LineDto lineDto = lineService.insertLine(lineEntity);
+		lineDto = lineService.insertLine(lineDto);
 
 		assertThat(lineDto.getId()).isEqualTo(4L);
 

@@ -4,6 +4,11 @@ import com.esgi.line.LineAdapter;
 import com.esgi.line.LineDto;
 import com.esgi.line.LineEntity;
 import com.esgi.line.LineRepository;
+import com.esgi.role.RoleEntity;
+import com.esgi.role.RoleRepository;
+import com.esgi.ruc.RucEntity;
+import com.esgi.ruc.RucRepository;
+import com.esgi.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +40,32 @@ public class CircleServiceImpl implements CircleService {
 	private final PrivateCircleRepository privateCircleRepository;
 
 	/**
+	 * Class to access to the table defining a role (User or Moderator) for a user in a circle
+	 */
+	private final RucRepository rucRepository;
+
+	/**
+	 * Class to access to available roles in a circle (User, Moderator, etc)
+	 */
+	private final RoleRepository roleRepository;
+
+	private Long moderatorRoleId;
+
+	/**
 	 * Constructor of the Service.
 	 * @param circleRepository an instance of CircleRepository provided by SpringBoot
+	 * @param rucRepository
+	 * @param roleRepository
 	 */
 	@Autowired
-	public CircleServiceImpl(CircleRepository circleRepository, LineRepository lineRepository, PrivateCircleRepository privateCircleRepository) {
+	public CircleServiceImpl(CircleRepository circleRepository, LineRepository lineRepository, PrivateCircleRepository privateCircleRepository, RucRepository rucRepository, RoleRepository roleRepository) {
 		this.circleRepository = circleRepository;
 		this.lineRepository = lineRepository;
 		this.privateCircleRepository = privateCircleRepository;
+		this.rucRepository = rucRepository;
+		this.roleRepository = roleRepository;
+
+		moderatorRoleId = null;
 	}
 
 	/**
@@ -74,21 +97,42 @@ public class CircleServiceImpl implements CircleService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CircleDto insertCircle(CircleEntity circleEntity) {
-		CircleDto circleDto = CircleAdapter.convertToDto(circleRepository.save(circleEntity));
+	public CircleDto insertCircle(CircleDto circleDto) {
+		CircleEntity circleEntity = CircleAdapter.convertToEntity(circleDto);
 
+		// Add the circle
+		circleEntity = circleRepository.save(circleEntity);
+
+		// Add moderators to the circle
+		if(circleDto.getModeratorsId() != null && !circleDto.getModeratorsId().isEmpty()) {
+			if (moderatorRoleId == null) {
+				final RoleEntity roleEntity = roleRepository.findByName("MODERATOR").get(0);
+				moderatorRoleId = roleEntity.getId();
+			}
+
+			for (Long moderatorId : circleDto.getModeratorsId()) {
+				RucEntity rucEntity = RucEntity.builder()
+						.idCircle(circleEntity.getId())
+						.idUser(moderatorId)
+						.idRole(moderatorRoleId)
+						.build();
+				rucRepository.save(rucEntity);
+			}
+		}
+
+		// Add a default line for the circle
 		LineEntity lineEntity = LineEntity.builder()
-				.idCircle(circleDto.getId())
-				.name(circleDto.getName())
+				.idCircle(circleEntity.getId())
+				.name(circleEntity.getName())
 				.announcement("")
 				.build();
 
-		// Add a default line for the circle
 		LineDto lineDto = LineAdapter.convertToDto(lineRepository.save(lineEntity));
 		List<LineDto> listLines = new ArrayList<>();
 		listLines.add(lineDto);
-		circleDto.setLines(listLines);
 
+		circleDto = CircleAdapter.convertToDto(circleEntity);
+		circleDto.setLines(listLines);
 		return circleDto;
 	}
 
@@ -148,12 +192,12 @@ public class CircleServiceImpl implements CircleService {
 	 * @return a new Circle for their PrivateCircle
 	 */
 	private CircleDto addPrivateCircle(Long idUser1, Long idUser2) {
-		CircleEntity circleEntity = CircleEntity.builder()
+		CircleDto circleDto = CircleDto.builder()
 				.name("Cercle privé")
 				.type((short) 2)
 				.build();
 
-		CircleDto circleDto = insertCircle(circleEntity);
+		circleDto = insertCircle(circleDto);
 
 		PrivateCircleEntity privateCircleEntity = PrivateCircleEntity.builder()
 				.idCircle(circleDto.getId())
