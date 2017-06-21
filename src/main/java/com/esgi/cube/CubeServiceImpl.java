@@ -34,10 +34,7 @@ public class CubeServiceImpl implements CubeService {
 	@Override
 	public CubeDto insertCube(CubeDto cubeDto) {
 		CubeEntity cubeEntity = CubeAdapter.dtoToEntity(cubeDto);
-
-		cubeEntity = cubeRepository.save(cubeEntity);
-
-		return CubeAdapter.entityToDto(cubeEntity);
+		return getCompleteCube(cubeRepository.save(cubeEntity));
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -105,6 +106,9 @@ public class CubeServiceTest {
 		assertThat(cubes.get(0).getUser()).isNotNull();
 		assertThat(cubes.get(0).getUser().getId()).isEqualTo(cube1.getIdUser());
 		assertThat(cubes.get(1).getId()).isEqualTo(cube2.getId());
+		assertThat(cubes.get(1).getUser()).isNotNull();
+
+		verify(userRepository, times(2)).findOne(anyLong());
 	}
 
 	@Test
@@ -127,8 +131,11 @@ public class CubeServiceTest {
 		assertThat(insertedCube).isNotNull();
 		assertThat(insertedCube.getId()).isEqualTo(cube3.getId());
 		assertThat(insertedCube.getIdLine()).isEqualTo(cube3.getIdLine());
+		assertThat(insertedCube.getUser()).isNotNull();
+		assertThat(insertedCube.getUser().getId()).isEqualTo(cube3.getIdUser());
 
 		verify(cubeRepository, times(1)).save(any(CubeEntity.class));
+		verify(userRepository, times(1)).findOne(anyLong());
 	}
 
 	@Test
