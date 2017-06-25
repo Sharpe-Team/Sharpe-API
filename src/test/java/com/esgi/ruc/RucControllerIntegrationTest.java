@@ -1,6 +1,7 @@
 package com.esgi.ruc;
 
 import com.esgi.role.RoleData;
+import com.esgi.user.UserData;
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @RucData
 @RoleData
+@UserData
 @ActiveProfiles("test")
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class RucControllerIntegrationTest {
@@ -107,7 +109,7 @@ public class RucControllerIntegrationTest {
 	}
 
 	@Test
-	public void should_get_link_by_role_and_circle() {
+	public void should_get_users_by_role_and_circle() {
 		given()
 				.contentType(JSON)
 		.when()
@@ -115,8 +117,12 @@ public class RucControllerIntegrationTest {
 		.then()
 				.statusCode(200)
 				.body("$", hasSize(1))
-				.body("id", hasItems(2))
-				.body("idUser", hasItems(1));
+				.body("id", hasItems(1))
+				.body("firstname", hasItems("first"))
+				.body("lastname", hasItems("lastname"))
+				.body("email", hasItems("one@email.com"))
+				.body("password", hasItems(""));
+
 	}
 
 	@Test

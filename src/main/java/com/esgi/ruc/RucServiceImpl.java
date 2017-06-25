@@ -1,9 +1,14 @@
 package com.esgi.ruc;
 
 import com.esgi.role.*;
+import com.esgi.user.UserAdapter;
+import com.esgi.user.UserDto;
+import com.esgi.user.UserEntity;
+import com.esgi.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,10 +22,13 @@ public class RucServiceImpl implements RucService {
 
 	private final RoleRepository roleRepository;
 
+	private final UserRepository userRepository;
+
 	@Autowired
-	public RucServiceImpl(RucRepository rucRepository, RoleRepository roleRepository) {
+	public RucServiceImpl(RucRepository rucRepository, RoleRepository roleRepository, UserRepository userRepository) {
 		this.rucRepository = rucRepository;
 		this.roleRepository = roleRepository;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -64,11 +72,18 @@ public class RucServiceImpl implements RucService {
 	}
 
 	@Override
-	public List<RucDto> getLinksByRoleAndCircle(Long idRole, Long idCircle) {
-		return rucRepository.findByIdRoleAndIdCircle(idRole, idCircle)
+	public List<UserDto> getLinksByRoleAndCircle(Long idRole, Long idCircle) {
+		final List<RucDto> listRuc = rucRepository.findByIdRoleAndIdCircle(idRole, idCircle)
 				.stream()
 				.map(RucAdapter::entityToDto)
 				.collect(Collectors.toList());
+
+		final List<UserDto> result = new ArrayList<>();
+		for (RucDto rucDto : listRuc) {
+			result.add(getUser(rucDto.getIdUser()));
+		}
+
+		return result;
 	}
 
 	@Override
@@ -140,5 +155,22 @@ public class RucServiceImpl implements RucService {
 		rucEntity = rucRepository.save(rucEntity);
 
 		return RucAdapter.entityToDto(rucEntity);
+	}
+
+	private UserDto getUser(Long idUser) {
+		final UserEntity userEntity = userRepository.findOne(idUser);
+		final UserDto userDto;
+		if(userEntity == null) {
+			userDto = UserDto.builder()
+					.firstname("Deleted user")
+					.lastname("")
+					.email("")
+					.build();
+		} else {
+			userDto = UserAdapter.entityToDto(userEntity);
+			userDto.setPassword("");
+		}
+
+		return userDto;
 	}
 }

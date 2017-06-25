@@ -3,6 +3,9 @@ package com.esgi.ruc;
 import com.esgi.role.RoleEntity;
 import com.esgi.role.RoleNotFoundException;
 import com.esgi.role.RoleRepository;
+import com.esgi.user.UserDto;
+import com.esgi.user.UserEntity;
+import com.esgi.user.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,6 +39,9 @@ public class RucServiceTest {
 	@Mock
 	private RoleRepository roleRepository;
 
+	@Mock
+	private UserRepository userRepository;
+
 	private RucEntity rucEntity1;
 	private RucEntity rucEntity2;
 	private RucEntity rucEntity3;
@@ -43,6 +50,8 @@ public class RucServiceTest {
 	private RucEntity rucEntity6;
 
 	private RoleEntity roleEntity;
+
+	private UserEntity userEntity;
 
 	public void initRucs() {
 		rucEntity1 = RucEntity.builder()
@@ -91,6 +100,13 @@ public class RucServiceTest {
 				.id(2L)
 				.name("MODERATOR")
 				.build();
+
+		userEntity = UserEntity.builder()
+				.id(1L)
+				.firstname("firstname")
+				.lastname("lastname")
+				.email("toto@esgi.fr")
+				.build();
 	}
 
 	@Before
@@ -138,6 +154,8 @@ public class RucServiceTest {
 
 		when(roleRepository.findByName(roleEntity.getName())).thenReturn(listRoleEntity);
 		when(roleRepository.findByName("UNKNOWN")).thenReturn(new ArrayList<>());
+
+		when(userRepository.findOne(1L)).thenReturn(userEntity);
 	}
 
 	@Test
@@ -188,13 +206,14 @@ public class RucServiceTest {
 	}
 
 	@Test
-	public void should_get_links_by_role_and_circle() {
+	public void should_get_users_by_role_and_circle() {
 		Long idRole = 2L;
 		Long idCircle = 2L;
-		final List<RucDto> links = rucService.getLinksByRoleAndCircle(idRole, idCircle);
+		final List<UserDto> links = rucService.getLinksByRoleAndCircle(idRole, idCircle);
 
 		assertThat(links).hasSize(1);
-		assertThat(links.get(0).getId()).isEqualTo(rucEntity2.getId());
+		assertThat(links.get(0).getId()).isEqualTo(userEntity.getId());
+		assertThat(links.get(0).getEmail()).isEqualTo(userEntity.getEmail());
 	}
 
 	@Test

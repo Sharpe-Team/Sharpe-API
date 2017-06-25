@@ -1,6 +1,7 @@
 package com.esgi.ruc;
 
 import com.esgi.role.RoleNotFoundException;
+import com.esgi.user.UserDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface RucService {
 	List<RucDto> getLinksByRoleAndUser(Long idRole, Long idUser);
 
 	@Transactional(readOnly = true)
-	List<RucDto> getLinksByRoleAndCircle(Long idRole, Long idCircle);
+	List<UserDto> getLinksByRoleAndCircle(Long idRole, Long idCircle);
 
 	@Transactional(readOnly = true)
 	RucDto getLinkByUserAndCircle(Long idUser, Long idCircle) throws RucNotFoundException;

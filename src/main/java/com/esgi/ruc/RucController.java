@@ -1,6 +1,7 @@
 package com.esgi.ruc;
 
 import com.esgi.role.RoleNotFoundException;
+import com.esgi.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,7 @@ public class RucController {
 	}
 
 	@RequestMapping(params = {"role_id", "circle_id"})
-	public List<RucDto> getLinksByRoleAndCircle(@RequestParam("role_id") Long idRole, @RequestParam("circle_id") Long idCircle) {
+	public List<UserDto> getLinksByRoleAndCircle(@RequestParam("role_id") Long idRole, @RequestParam("circle_id") Long idCircle) {
 		return rucService.getLinksByRoleAndCircle(idRole, idCircle);
 	}
 
