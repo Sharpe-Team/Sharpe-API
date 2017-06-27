@@ -114,9 +114,17 @@ public class RucServiceImpl implements RucService {
 	}
 
 	@Override
-	public RucDto updateRole(Long idUser, Long idCircle, Long newIdRole) throws RucNotFoundException {
+	public RucDto updateRole(Long idUser, Long idCircle, Long newIdRole) {
 		// Find link
-		RucDto rucDto = getLinkByUserAndCircle(idUser, idCircle);
+		RucDto rucDto;
+		try {
+			rucDto = getLinkByUserAndCircle(idUser, idCircle);
+		} catch (RucNotFoundException e) {
+			rucDto = RucDto.builder()
+					.idUser(idUser)
+					.idCircle(idCircle)
+					.build();
+		}
 
 		// Update link
 		RucEntity rucEntity = RucEntity.builder()
@@ -133,9 +141,17 @@ public class RucServiceImpl implements RucService {
 	}
 
 	@Override
-	public RucDto updateRole(Long idUser, Long idCircle, String newRoleName) throws RucNotFoundException, RoleNotFoundException {
+	public RucDto updateRole(Long idUser, Long idCircle, String newRoleName) throws RoleNotFoundException {
 		// Find link
-		RucDto rucDto = getLinkByUserAndCircle(idUser, idCircle);
+		RucDto rucDto;
+		try {
+			rucDto = getLinkByUserAndCircle(idUser, idCircle);
+		} catch (RucNotFoundException e) {
+			rucDto = RucDto.builder()
+					.idUser(idUser)
+					.idCircle(idCircle)
+					.build();
+		}
 
 		// Find role
 		RoleEntity roleEntity = roleRepository.findByName(newRoleName)

@@ -78,12 +78,12 @@ public class RucController {
 	}
 
 	@PutMapping(params = {"user_id", "circle_id", "role_id"})
-	public RucDto updateRoleWithId(@RequestParam("user_id") Long idUser, @RequestParam("circle_id") Long idCircle, @RequestParam("role_id") Long idRole) throws RucNotFoundException {
+	public RucDto updateRoleWithId(@RequestParam("user_id") Long idUser, @RequestParam("circle_id") Long idCircle, @RequestParam("role_id") Long idRole) {
 		return rucService.updateRole(idUser, idCircle, idRole);
 	}
 
 	@PutMapping(params = {"user_id", "circle_id", "role_name"})
-	public RucDto updateRoleWithName(@RequestParam("user_id") Long idUser, @RequestParam("circle_id") Long idCircle, @RequestParam("role_name") String roleName) throws RucNotFoundException, RoleNotFoundException {
+	public RucDto updateRoleWithName(@RequestParam("user_id") Long idUser, @RequestParam("circle_id") Long idCircle, @RequestParam("role_name") String roleName) throws RoleNotFoundException {
 		return rucService.updateRole(idUser, idCircle, roleName);
 	}
 }

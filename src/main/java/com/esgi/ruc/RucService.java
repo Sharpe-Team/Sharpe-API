@@ -39,8 +39,8 @@ public interface RucService {
 	List<RucDto> deleteLink(Long idUser, Long idCircle);
 
 	@Transactional
-	RucDto updateRole(Long idUser, Long idCircle, Long newIdRole) throws RucNotFoundException;
+	RucDto updateRole(Long idUser, Long idCircle, Long newIdRole);
 
 	@Transactional
-	RucDto updateRole(Long idUser, Long idCircle, String newRoleName) throws RucNotFoundException, RoleNotFoundException;
+	RucDto updateRole(Long idUser, Long idCircle, String newRoleName) throws RoleNotFoundException;
 }

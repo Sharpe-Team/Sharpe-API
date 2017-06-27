@@ -246,7 +246,10 @@ public class RucControllerIntegrationTest {
 		.when()
 				.put("/rucs?user_id={user_id}&circle_id={circle_id}&role_id={role_id}", 3L, 3L, 2L)
 		.then()
-				.statusCode(404);
+				.statusCode(200)
+				.body("idUser", is(3))
+				.body("idCircle", is(3))
+				.body("idRole", is(2));
 	}
 
 	@Test
@@ -270,7 +273,10 @@ public class RucControllerIntegrationTest {
 		.when()
 				.put("/rucs?user_id={user_id}&circle_id={circle_id}&role_name={role_name}", 3L, 3L, "MODERATOR")
 		.then()
-				.statusCode(404);
+				.statusCode(200)
+				.body("idUser", is(3))
+				.body("idCircle", is(3))
+				.body("idRole", is(2));
 	}
 
 	@Test

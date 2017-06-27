@@ -48,6 +48,7 @@ public class RucServiceTest {
 	private RucEntity rucEntity4;
 	private RucEntity rucEntity5;
 	private RucEntity rucEntity6;
+	private RucEntity rucEntity7;
 
 	private RoleEntity roleEntity;
 
@@ -94,6 +95,13 @@ public class RucServiceTest {
 				.idRole(2L)
 				.idUser(2L)
 				.idCircle(2L)
+				.build();
+
+		rucEntity7 = RucEntity.builder()
+				.id(7L)
+				.idUser(3L)
+				.idCircle(3L)
+				.idRole(2L)
 				.build();
 
 		roleEntity = RoleEntity.builder()
@@ -280,33 +288,30 @@ public class RucServiceTest {
 		Long idCircle = 2L;
 		Long idRole = 2L;
 
-		try {
-			RucDto rucDto = rucService.updateRole(idUser, idCircle, idRole);
+		RucDto rucDto = rucService.updateRole(idUser, idCircle, idRole);
 
-			assertThat(rucDto).isNotNull();
-			assertThat(rucDto.getId()).isEqualTo(rucEntity6.getId());
-			assertThat(rucDto.getIdRole()).isEqualTo(rucEntity6.getIdRole());
+		assertThat(rucDto).isNotNull();
+		assertThat(rucDto.getId()).isEqualTo(rucEntity6.getId());
+		assertThat(rucDto.getIdRole()).isEqualTo(rucEntity6.getIdRole());
 
-			verify(rucRepository, times(1)).findByIdUserAndIdCircle(idUser, idCircle);
-			verify(rucRepository, times(1)).save(any(RucEntity.class));
-		} catch (RucNotFoundException e) {
-			fail("Test fail : an unexpected exception has been thrown when trying to update a link with the idRole");
-		}
+		verify(rucRepository, times(1)).findByIdUserAndIdCircle(idUser, idCircle);
+		verify(rucRepository, times(1)).save(any(RucEntity.class));
 	}
 
 	@Test
-	public void should_throw_RucNotFoundException_when_update_with_idRole_with_unknown_link() {
+	public void should_create_link_when_update_with_idRole_with_unknown_link() {
+		when(rucRepository.save(any(RucEntity.class))).thenReturn(rucEntity7);
+
 		Long idUser = 3L;
 		Long idCircle = 3L;
 		Long idRole = 2L;
 
-		try {
-			rucService.updateRole(idUser, idCircle, idRole);
+		RucDto rucDto = rucService.updateRole(idUser, idCircle, idRole);
+		assertThat(rucDto).isNotNull();
+		assertThat(rucDto.getId()).isEqualTo(rucEntity7.getId());
 
-			fail("Test fail : an exception should have been thrown when trying to update a link with unknown user and circle");
-		} catch (RucNotFoundException e) {
-			verify(rucRepository, times(1)).findByIdUserAndIdCircle(idUser, idCircle);
-		}
+		verify(rucRepository, times(1)).findByIdUserAndIdCircle(idUser, idCircle);
+		verify(rucRepository, times(1)).save(any(RucEntity.class));
 	}
 
 	@Test
@@ -327,23 +332,26 @@ public class RucServiceTest {
 			verify(rucRepository, times(1)).findByIdUserAndIdCircle(idUser, idCircle);
 			verify(roleRepository, times(1)).findByName(roleName);
 			verify(rucRepository, times(1)).save(any(RucEntity.class));
-		} catch (Exception e) {
+		} catch (RoleNotFoundException e) {
 			fail("Test fail : an unexpected exception has been thrown when trying to update a link with the roleName");
 		}
 	}
 
 	@Test
-	public void should_throw_RucNotFoundException_when_update_with_roleName_with_unknown_link() {
+	public void should_create_link_when_update_with_roleName_with_unknown_link() {
+		when(rucRepository.save(any(RucEntity.class))).thenReturn(rucEntity7);
+
 		Long idUser = 3L;
 		Long idCircle = 3L;
 		String roleName = roleEntity.getName();
 
 		try {
-			rucService.updateRole(idUser, idCircle, roleName);
+			RucDto rucDto = rucService.updateRole(idUser, idCircle, roleName);
+			assertThat(rucDto).isNotNull();
+			assertThat(rucDto.getId()).isEqualTo(rucEntity7.getId());
 
-			fail("Test failed : an exception should have been thrown when trying to update a link with unknown user and circle");
-		} catch (RucNotFoundException e) {
 			verify(rucRepository, times(1)).findByIdUserAndIdCircle(idUser, idCircle);
+			verify(rucRepository, times(1)).save(any(RucEntity.class));
 		} catch (RoleNotFoundException e) {
 			fail("Test failed : a RucNotFoundException should have been thrown when trying to update a link with unknown user and circle");
 		}
@@ -359,8 +367,6 @@ public class RucServiceTest {
 			rucService.updateRole(idUser, idCircle, roleName);
 
 			fail("Test failed : an exception should have been thrown when trying to update a link with unknown user and circle");
-		} catch (RucNotFoundException e) {
-			fail("Test failed : a RoleNotFoundException should have been thrown when trying to update a link with unknown user and circle");
 		} catch (RoleNotFoundException e) {
 			verify(rucRepository, times(1)).findByIdUserAndIdCircle(idUser, idCircle);
 			verify(roleRepository, times(1)).findByName(roleName);
