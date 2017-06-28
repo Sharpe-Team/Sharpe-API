@@ -23,4 +23,6 @@ public interface UserService {
 
 	@Transactional
 	void deleteUser(Long id);
+
+	UserDto getCompleteUserDto(UserEntity userEntity);
 }
