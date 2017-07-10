@@ -1,6 +1,7 @@
 package com.esgi.joining_request;
 
 import com.esgi.role.RoleNotFoundException;
+import com.esgi.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class JoiningRequestController {
 	}
 
 	@RequestMapping(params = "circle_id")
-	public List<JoiningRequestDto> getJoiningRequestsByCircle(@RequestParam("circle_id") Long id) {
+	public List<UserDto> getJoiningRequestsByCircle(@RequestParam("circle_id") Long id) {
 		return joiningRequestService.getJoiningRequestsByCircle(id);
 	}
 

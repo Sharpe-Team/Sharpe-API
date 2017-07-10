@@ -1,6 +1,7 @@
 package com.esgi.joining_request;
 
 import com.esgi.role.RoleNotFoundException;
+import com.esgi.user.UserDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface JoiningRequestService {
 	List<JoiningRequestDto> getJoiningRequestsByUser(Long id);
 
 	@Transactional(readOnly = true)
-	List<JoiningRequestDto> getJoiningRequestsByCircle(Long id);
+	List<UserDto> getJoiningRequestsByCircle(Long id);
 
 	@Transactional
 	JoiningRequestDto insertJoiningRequest(JoiningRequestDto joiningRequestDto);

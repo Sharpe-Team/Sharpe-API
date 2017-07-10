@@ -5,6 +5,7 @@ import com.esgi.role.RoleNotFoundException;
 import com.esgi.role.RoleRepository;
 import com.esgi.ruc.RucEntity;
 import com.esgi.ruc.RucRepository;
+import com.esgi.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +24,14 @@ public class JoiningRequestServiceImpl implements JoiningRequestService {
 
 	private final RoleRepository roleRepository;
 
+	private final UserService userService;
+
 	@Autowired
-	public JoiningRequestServiceImpl(JoiningRequestRepository joiningRequestRepository, RucRepository rucRepository, RoleRepository roleRepository) {
+	public JoiningRequestServiceImpl(JoiningRequestRepository joiningRequestRepository, RucRepository rucRepository, RoleRepository roleRepository, UserService userService) {
 		this.joiningRequestRepository = joiningRequestRepository;
 		this.rucRepository = rucRepository;
 		this.roleRepository = roleRepository;
+		this.userService = userService;
 	}
 
 	@Override
@@ -47,10 +51,16 @@ public class JoiningRequestServiceImpl implements JoiningRequestService {
 	}
 
 	@Override
-	public List<JoiningRequestDto> getJoiningRequestsByCircle(Long id) {
+	public List<UserDto> getJoiningRequestsByCircle(Long id) {
 		return joiningRequestRepository.findByIdCircle(id)
 				.stream()
-				.map(JoiningRequestAdapter::entityToDto)
+				.map(joiningRequestEntity -> {
+					try {
+						return userService.getUser(joiningRequestEntity.getIdUser());
+					} catch (UserNotFoundException e) {
+						return null;
+					}
+				})
 				.collect(Collectors.toList());
 	}
 

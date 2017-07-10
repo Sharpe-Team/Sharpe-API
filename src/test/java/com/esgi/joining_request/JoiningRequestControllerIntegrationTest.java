@@ -1,6 +1,7 @@
 package com.esgi.joining_request;
 
 import com.esgi.role.RoleData;
+import com.esgi.user.UserData;
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +29,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @JoiningRequestData
 @RoleData
+@UserData
 @ActiveProfiles("test")
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class JoiningRequestControllerIntegrationTest {
@@ -66,7 +68,7 @@ public class JoiningRequestControllerIntegrationTest {
 		.then()
 				.statusCode(200)
 				.body("$", hasSize(2))
-				.body("id", hasItems(1, 3));
+				.body("id", hasItems(1, 2));
 	}
 
 	@Test

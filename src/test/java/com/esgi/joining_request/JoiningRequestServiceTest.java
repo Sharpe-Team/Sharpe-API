@@ -5,6 +5,7 @@ import com.esgi.role.RoleNotFoundException;
 import com.esgi.role.RoleRepository;
 import com.esgi.ruc.RucEntity;
 import com.esgi.ruc.RucRepository;
+import com.esgi.user.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,6 +42,12 @@ public class JoiningRequestServiceTest {
 	@Mock
 	private RucRepository rucRepository;
 
+	@Mock
+	private UserRepository userRepository;
+
+	@Mock
+	private UserServiceImpl userService;
+
 	private JoiningRequestEntity joiningRequestEntity1;
 	private JoiningRequestEntity joiningRequestEntity2;
 	private JoiningRequestEntity joiningRequestEntity3;
@@ -48,6 +56,9 @@ public class JoiningRequestServiceTest {
 	private RoleEntity roleEntity;
 
 	private RucEntity rucEntity;
+
+	private UserDto userDto;
+	private UserDto userDto2;
 
 	private void initEntities() {
 
@@ -86,10 +97,22 @@ public class JoiningRequestServiceTest {
 				.idCircle(2L)
 				.idRole(1L)
 				.build();
+
+		userDto = UserDto.builder()
+				.id(1L)
+				.email("third@third.com")
+				.password("azertyuiop")
+				.build();
+
+		userDto2 = UserDto.builder()
+				.id(2L)
+				.email("third@third.com")
+				.password("azertyuiop")
+				.build();
 	}
 
 	@Before
-	public void configureMock() {
+	public void configureMock() throws UserNotFoundException {
 		initEntities();
 
 		List<JoiningRequestEntity> listAll = new ArrayList<>();
@@ -118,6 +141,10 @@ public class JoiningRequestServiceTest {
 		when(roleRepository.findByName("USER")).thenReturn(listRole);
 
 		when(rucRepository.save(any(RucEntity.class))).thenReturn(rucEntity);
+		when(rucRepository.findByIdUser(anyLong())).thenReturn(new ArrayList<>());
+
+		when(userService.getUser(1L)).thenReturn(userDto);
+		when(userService.getUser(2L)).thenReturn(userDto2);
 	}
 
 	@Test
@@ -142,12 +169,14 @@ public class JoiningRequestServiceTest {
 	@Test
 	public void should_get_joining_requests_by_circle() {
 		Long id = 1L;
-		List<JoiningRequestDto> joiningRequests = joiningRequestService.getJoiningRequestsByCircle(id);
+		List<UserDto> users = joiningRequestService.getJoiningRequestsByCircle(id);
 
-		assertThat(joiningRequests).isNotNull();
-		assertThat(joiningRequests).hasSize(2);
-		assertThat(joiningRequests.get(0).getId()).isEqualTo(1L);
-		assertThat(joiningRequests.get(1).getId()).isEqualTo(3L);
+		assertThat(users).isNotNull();
+		assertThat(users).hasSize(2);
+		assertThat(users.get(0)).isNotNull();
+		assertThat(users.get(0).getId()).isEqualTo(1L);
+		assertThat(users.get(1)).isNotNull();
+		assertThat(users.get(1).getId()).isEqualTo(2L);
 	}
 
 	@Test
