@@ -132,7 +132,7 @@ public class LineControllerIntegrationTest {
 	@Test
 	public void should_update_announcement() {
 		when()
-				.put("/lines?id={id}&announcement={announcement}", 1L, "New message")
+				.put("/lines/{line_id}?announcement={announcement}", 1L, "New message")
 		.then()
 				.statusCode(200)
 				.body("id", is(1))
@@ -144,7 +144,7 @@ public class LineControllerIntegrationTest {
 	@Test
 	public void should_not_update_announcement_and_throw_LineNotFoundException_with_unknown_line() {
 		when()
-				.put("/lines?id={id}&announcement={announcement}", 4L, "New message")
+				.put("/lines/{line_id}?announcement={announcement}", 4L, "New message")
 		.then()
 				.statusCode(404);
 	}
