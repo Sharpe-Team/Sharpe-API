@@ -58,4 +58,10 @@ public class JoiningRequestController {
 	public void deleteJoiningRequest(@PathVariable("joining_request_id") Long id, @RequestParam("accepted") boolean isAccepted) throws JoiningRequestNotFoundException, RoleNotFoundException {
 		joiningRequestService.deleteJoiningRequest(id, isAccepted);
 	}
+
+	@DeleteMapping(params = {"user_id", "circle_id", "accepted"})
+	@ResponseStatus(NO_CONTENT)
+	public void deleteAllJoiningRequestsByIdUserAndIdCircle(@RequestParam("user_id") Long idUser, @RequestParam("circle_id") Long idCircle, @RequestParam("accepted") boolean isAccepted) throws RoleNotFoundException {
+		joiningRequestService.deleteJoiningRequestsByIdUserAndIdCircle(idUser, idCircle, isAccepted);
+	}
 }

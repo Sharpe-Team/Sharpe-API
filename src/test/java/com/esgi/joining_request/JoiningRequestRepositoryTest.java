@@ -65,4 +65,17 @@ public class JoiningRequestRepositoryTest {
 		assertThat(joiningRequests).isNotNull();
 		assertThat(joiningRequests).hasSize(0);
 	}
+
+	@Test
+	public void should_delete_all_joining_requests_by_idUser_and_idCircle() {
+		Long idUser = 1L;
+		Long idCircle = 1L;
+
+		List<JoiningRequestEntity> joiningRequests = joiningRequestRepository.deleteAllByIdUserAndIdCircle(idUser, idCircle);
+
+		assertThat(joiningRequests).isNotNull();
+		assertThat(joiningRequests).hasSize(1);
+		assertThat(joiningRequests.get(0)).isNotNull();
+		assertThat(joiningRequests.get(0).getId()).isEqualTo(1L);
+	}
 }

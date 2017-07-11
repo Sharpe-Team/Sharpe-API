@@ -2,6 +2,7 @@ package com.esgi.joining_request;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,4 +15,7 @@ public interface JoiningRequestRepository extends JpaRepository<JoiningRequestEn
 	List<JoiningRequestEntity> findByIdUser(Long id);
 
 	List<JoiningRequestEntity> findByIdCircle(Long id);
+
+	@Transactional
+	List<JoiningRequestEntity> deleteAllByIdUserAndIdCircle(Long idUser, Long idCircle);
 }

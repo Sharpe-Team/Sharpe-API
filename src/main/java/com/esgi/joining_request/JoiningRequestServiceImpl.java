@@ -85,19 +85,32 @@ public class JoiningRequestServiceImpl implements JoiningRequestService {
 
 		// If the joining request has been accepted, add a ruc for the user and the circle of the joining request
 		if(isAccepted) {
-			// Find role
-			RoleEntity roleEntity = roleRepository.findByName("USER")
-					.stream()
-					.findFirst()
-					.orElseThrow(RoleNotFoundException::new);
-
-			RucEntity rucEntity = RucEntity.builder()
-					.idUser(joiningRequestEntity.getIdUser())
-					.idCircle(joiningRequestEntity.getIdCircle())
-					.idRole(roleEntity.getId())
-					.build();
-
-			rucRepository.save(rucEntity);
+			addRucForAcceptedJoiningRequest(joiningRequestEntity);
 		}
+	}
+
+	@Override
+	public void deleteJoiningRequestsByIdUserAndIdCircle(Long idUser, Long idCircle, boolean isAccepted) throws RoleNotFoundException {
+		List<JoiningRequestEntity> deletedJoiningRequests = joiningRequestRepository.deleteAllByIdUserAndIdCircle(idUser, idCircle);
+
+		if(isAccepted && deletedJoiningRequests != null && !deletedJoiningRequests.isEmpty()) {
+			addRucForAcceptedJoiningRequest(deletedJoiningRequests.get(0));
+		}
+	}
+
+	private void addRucForAcceptedJoiningRequest(JoiningRequestEntity deletedJoiningRequest) throws RoleNotFoundException {
+		// Find role
+		RoleEntity roleEntity = roleRepository.findByName("USER")
+				.stream()
+				.findFirst()
+				.orElseThrow(RoleNotFoundException::new);
+
+		RucEntity rucEntity = RucEntity.builder()
+				.idUser(deletedJoiningRequest.getIdUser())
+				.idCircle(deletedJoiningRequest.getIdCircle())
+				.idRole(roleEntity.getId())
+				.build();
+
+		rucRepository.save(rucEntity);
 	}
 }

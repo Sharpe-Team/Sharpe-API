@@ -25,4 +25,7 @@ public interface JoiningRequestService {
 
 	@Transactional
 	void deleteJoiningRequest(Long id, boolean isAccepted) throws JoiningRequestNotFoundException, RoleNotFoundException;
+
+	@Transactional
+	void deleteJoiningRequestsByIdUserAndIdCircle(Long idUser, Long idCircle, boolean isAccepted) throws RoleNotFoundException;
 }

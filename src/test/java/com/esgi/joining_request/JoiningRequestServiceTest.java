@@ -131,12 +131,16 @@ public class JoiningRequestServiceTest {
 		List<RoleEntity> listRole = new ArrayList<>();
 		listRole.add(roleEntity);
 
+		List<JoiningRequestEntity> listDeleted = new ArrayList<>();
+		listDeleted.add(joiningRequestEntity2);
+
 		when(joiningRequestRepository.findAll()).thenReturn(listAll);
 		when(joiningRequestRepository.findByIdUser(1L)).thenReturn(listUser1);
 		when(joiningRequestRepository.findByIdCircle(1L)).thenReturn(listCircle1);
 		when(joiningRequestRepository.save(any(JoiningRequestEntity.class))).thenReturn(joiningRequestEntity4);
 		when(joiningRequestRepository.findOne(2L)).thenReturn(joiningRequestEntity2);
 		when(joiningRequestRepository.findOne(4L)).thenReturn(null);
+		when(joiningRequestRepository.deleteAllByIdUserAndIdCircle(1L, 2L)).thenReturn(listDeleted);
 
 		when(roleRepository.findByName("USER")).thenReturn(listRole);
 
@@ -243,6 +247,40 @@ public class JoiningRequestServiceTest {
 			verify(joiningRequestRepository, times(0)).delete(id);
 			verify(roleRepository, times(0)).findByName("USER");
 			verify(rucRepository, times(0)).save(any(RucEntity.class));
+		}
+	}
+
+	@Test
+	public void should_delete_all_not_accepted_joining_requests_by_idUser_and_idCircle() {
+		Long idUser = 1L;
+		Long idCircle = 2L;
+		boolean isAccepted = false;
+
+		try {
+			joiningRequestService.deleteJoiningRequestsByIdUserAndIdCircle(idUser, idCircle, isAccepted);
+
+			verify(joiningRequestRepository, times(1)).deleteAllByIdUserAndIdCircle(idUser, idCircle);
+			verify(roleRepository, times(0)).findByName("USER");
+			verify(rucRepository, times(0)).save(any(RucEntity.class));
+		} catch (RoleNotFoundException e) {
+			fail("An unexpected exception has been thrown while deleting a not accepted joining request");
+		}
+	}
+
+	@Test
+	public void should_delete_all_accepted_joining_requests_by_idUser_and_idCircle() {
+		Long idUser = 1L;
+		Long idCircle = 2L;
+		boolean isAccepted = true;
+
+		try {
+			joiningRequestService.deleteJoiningRequestsByIdUserAndIdCircle(idUser, idCircle, isAccepted);
+
+			verify(joiningRequestRepository, times(1)).deleteAllByIdUserAndIdCircle(idUser, idCircle);
+			verify(roleRepository, times(1)).findByName("USER");
+			verify(rucRepository, times(1)).save(any(RucEntity.class));
+		} catch (RoleNotFoundException e) {
+			fail("An unexpected exception has been thrown while deleting a not accepted joining request");
 		}
 	}
 }

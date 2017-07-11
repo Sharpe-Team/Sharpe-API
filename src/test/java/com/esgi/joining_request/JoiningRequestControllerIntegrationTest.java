@@ -140,4 +140,20 @@ public class JoiningRequestControllerIntegrationTest {
 		.then()
 				.statusCode(404);
 	}
+
+	@Test
+	public void should_delete_all_not_accepted_joining_requests_by_idUser_and_idCircle() {
+		when()
+				.delete("/joining-requests?user_id={user_id}&circle_id={circle_id}&accepted={accepted}", 1L, 2L, false)
+		.then()
+				.statusCode(204);
+	}
+
+	@Test
+	public void should_delete_all_accepted_joining_requests_by_idUser_and_idCircle() {
+		when()
+				.delete("/joining-requests?user_id={user_id}&circle_id={circle_id}&accepted={accepted}", 1L, 2L, true)
+		.then()
+				.statusCode(204);
+	}
 }
