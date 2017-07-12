@@ -1,6 +1,7 @@
 package com.esgi.security;
 
 import com.esgi.user.UserRepository;
+import com.esgi.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+	UserService userService;
+
     @Bean
 	CorsFilter corsFilter() {
     	return new CorsFilter();
@@ -39,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 // We filter the api/login requests
-                .addFilterBefore(new JWTLoginFilter("/login", authenticationManager(), userRepository),
+                .addFilterBefore(new JWTLoginFilter("/login", authenticationManager(), userRepository, userService),
                         UsernamePasswordAuthenticationFilter.class)
                 // And filter other requests to check the presence of JWT in header
                 .addFilterBefore(new JWTAuthenticationFilter(),

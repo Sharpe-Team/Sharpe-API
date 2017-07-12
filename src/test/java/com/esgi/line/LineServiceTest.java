@@ -37,11 +37,12 @@ public class LineServiceTest {
 
 	private LineEntity line3;
 
+	private LineEntity line3bis;
+
 	private LineEntity line4;
 
 	@Before
 	public void init_circles() {
-
 		line1 = LineEntity.builder()
 				.id(1L)
 				.idCircle(1L)
@@ -63,6 +64,9 @@ public class LineServiceTest {
 				.announcement("message1")
 				.build();
 
+		line3bis = line3;
+		line3bis.setAnnouncement("New message");
+
 		line4 = LineEntity.builder()
 				.id(4L)
 				.idCircle(3L)
@@ -73,7 +77,6 @@ public class LineServiceTest {
 
 	@Before
 	public void configure_mock() {
-
 		List<LineEntity> list = new ArrayList<>();
 		list.add(line1);
 		list.add(line2);
@@ -81,13 +84,10 @@ public class LineServiceTest {
 		when(lineRepository.findByIdCircle(1L)).thenReturn(list);
 
 		when(lineRepository.findOne(3L)).thenReturn(line3);
-
-		when(lineRepository.save(any(LineEntity.class))).thenReturn(line4);
 	}
 
 	@Test
 	public void should_get_lines_of_circle_1() {
-
 		Long idCircle = 1L;
 
 		try {
@@ -106,7 +106,6 @@ public class LineServiceTest {
 
 	@Test
 	public void should_throw_CircleNotFoundException_for_lines_of_circle_3() {
-
 		Long idCircle = 3L;
 
 		try {
@@ -119,7 +118,6 @@ public class LineServiceTest {
 
 	@Test
 	public void should_get_one_line() {
-
 		Long id = 3L;
 
 		try {
@@ -136,6 +134,7 @@ public class LineServiceTest {
 
 	@Test
 	public void should_throw_LineNotFoundException_with_unknown_id() {
+		when(lineRepository.findOne(4L)).thenReturn(null);
 
 		Long id = 4L;
 
@@ -144,11 +143,13 @@ public class LineServiceTest {
 
 			fail("Test failed : an exception should have been thrown when trying to retrieve one line with id = " + id);
 		} catch (LineNotFoundException e) {
+			verify(lineRepository, times(1)).findOne(id);
 		}
 	}
 
 	@Test
-	public void should_insert_circle() {
+	public void should_insert_line() {
+		when(lineRepository.save(any(LineEntity.class))).thenReturn(line4);
 
 		LineDto lineDto = LineDto.builder()
 				.idCircle(3L)
@@ -161,5 +162,39 @@ public class LineServiceTest {
 		assertThat(lineDto.getId()).isEqualTo(4L);
 
 		verify(lineRepository, times(1)).save(any(LineEntity.class));
+	}
+
+	@Test
+	public void should_update_announcement() {
+		when(lineRepository.save(any(LineEntity.class))).thenReturn(line3bis);
+
+		Long id = 3L;
+		String announcement = "New message";
+
+		try {
+			LineDto line = lineService.updateLine(id, announcement);
+
+			assertThat(line).isNotNull();
+			assertThat(line.getId()).isEqualTo(id);
+			assertThat(line.getAnnouncement()).isEqualTo(announcement);
+		} catch (LineNotFoundException e) {
+			fail("An unexpected exception has been thrown while updating the announcement of a line");
+		}
+	}
+
+	@Test
+	public void should_not_update_announcement_and_throw_LineNotFoundException_with_unknown_line() {
+		when(lineRepository.findOne(4L)).thenReturn(null);
+
+		Long id = 4L;
+		String announcement = "New message";
+
+		try {
+			LineDto line = lineService.updateLine(id, announcement);
+
+			fail("Test failed : an exception should have been thrown when trying to update a line with id = " + id);
+		} catch (LineNotFoundException e) {
+			verify(lineRepository, times(1)).findOne(id);
+		}
 	}
 }

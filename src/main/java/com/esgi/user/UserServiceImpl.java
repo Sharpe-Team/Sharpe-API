@@ -82,7 +82,8 @@ public class UserServiceImpl implements UserService {
 		userRepository.delete(id);
 	}
 
-	private UserDto getCompleteUserDto(UserEntity userEntity) {
+	@Override
+	public UserDto getCompleteUserDto(UserEntity userEntity) {
 		UserDto userDto = UserAdapter.entityToDto(userEntity);
 		// Hide password
 		userDto.setPassword("");

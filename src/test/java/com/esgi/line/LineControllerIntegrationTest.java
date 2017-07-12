@@ -128,4 +128,24 @@ public class LineControllerIntegrationTest {
 		.then()
 				.statusCode(400);
 	}
+
+	@Test
+	public void should_update_announcement() {
+		when()
+				.put("/lines/{line_id}?announcement={announcement}", 1L, "New message")
+		.then()
+				.statusCode(200)
+				.body("id", is(1))
+				.body("idCircle", is(1))
+				.body("name", is("line1"))
+				.body("announcement", is("New message"));
+	}
+
+	@Test
+	public void should_not_update_announcement_and_throw_LineNotFoundException_with_unknown_line() {
+		when()
+				.put("/lines/{line_id}?announcement={announcement}", 4L, "New message")
+		.then()
+				.statusCode(404);
+	}
 }

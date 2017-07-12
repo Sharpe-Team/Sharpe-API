@@ -34,4 +34,7 @@ public interface LineService {
 	 */
 	@Transactional
 	LineDto insertLine(LineDto lineDto);
+
+	@Transactional
+	LineDto updateLine(Long id, String announcement) throws LineNotFoundException;
 }

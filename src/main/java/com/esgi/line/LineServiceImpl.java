@@ -31,7 +31,6 @@ public class LineServiceImpl implements LineService {
 	 */
 	@Override
 	public List<LineDto> getAllLinesInCircle(Long idCircle) throws CircleNotFoundException {
-
 		List<LineDto> lines = lineRepository.findByIdCircle(idCircle)
 				.stream()
 				.map(LineAdapter::convertToDto)
@@ -49,7 +48,6 @@ public class LineServiceImpl implements LineService {
 	 */
 	@Override
 	public LineDto getLine(Long id) throws LineNotFoundException {
-
 		LineEntity line = lineRepository.findOne(id);
 
 		if(line == null) {
@@ -67,5 +65,18 @@ public class LineServiceImpl implements LineService {
 		LineEntity lineEntity = LineAdapter.convertToEntity(lineDto);
 
 		return LineAdapter.convertToDto(lineRepository.save(lineEntity));
+	}
+
+	@Override
+	public LineDto updateLine(Long id, String announcement) throws LineNotFoundException {
+		LineEntity line = lineRepository.findOne(id);
+
+		if(line == null) {
+			throw new LineNotFoundException();
+		}
+
+		line.setAnnouncement(announcement);
+
+		return LineAdapter.convertToDto(lineRepository.save(line));
 	}
 }

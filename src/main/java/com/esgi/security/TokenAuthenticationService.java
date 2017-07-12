@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,15 +41,13 @@ public class TokenAuthenticationService {
     /**
      * Add the token in the header response
      * @param res
-     * @param userEntity
+     * @param userDto
      */
-    public static void addAuthentication(HttpServletResponse res, UserEntity userEntity) {
-		UserDto userDto = UserAdapter.entityToDto(userEntity);
-		userDto.setPassword("");
+    public static void addAuthentication(HttpServletResponse res, UserDto userDto) {
 
 		String JWT = Jwts.builder()
 				.claim("user", userDto)
-                .setSubject(userEntity.getEmail())
+                .setSubject(userDto.getEmail())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
                 .signWith(SignatureAlgorithm.HS512, getSecretKey())
                 .compact();

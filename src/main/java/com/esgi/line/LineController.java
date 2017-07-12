@@ -86,4 +86,9 @@ public class LineController {
 		return ResponseEntity.created(uri).build();
 		*/
 	}
+
+	@PutMapping(value = "/{line_id}", params = "announcement")
+	public LineDto updateLine(@PathVariable("line_id") Long id, @RequestParam("announcement") String announcement) throws LineNotFoundException {
+		return lineService.updateLine(id, announcement);
+	}
 }
