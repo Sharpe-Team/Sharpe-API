@@ -48,5 +48,5 @@ public class UserDto {
     private Date created;
     private Date updated;
 
-    private HashMap<Long, String> circlesRole;
+    private HashMap<Long, String> ruc;
 }
