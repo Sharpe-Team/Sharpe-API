@@ -14,5 +14,4 @@ pipelines:
     develop:
       - step:
           script:
-            - cp <repo-path>/settings.xml $HOME/.m2/settings.xml
             - mvn deploy
