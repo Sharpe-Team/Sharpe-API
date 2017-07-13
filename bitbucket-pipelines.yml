@@ -14,5 +14,5 @@ pipelines:
     develop:
       - step:
           script:
-            - cp /opt/atlassian/pipelines/agent/build/settings.xml $HOME/.m2/settings.xml
+            - cp <repo-path>/settings.xml $HOME/.m2/settings.xml
             - mvn deploy
