@@ -14,8 +14,7 @@ pipelines:
     develop:
       - step:
           script:
-            - mvn -s settings.xml
-            - mvn deploy
+            - mvn -s settings.xml deploy
   custom:
     manual:
       - step:
