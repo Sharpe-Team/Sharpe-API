@@ -5,7 +5,7 @@
 
 	<groupId>com.esgi</groupId>
 	<artifactId>annual-project-api</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>annual-project-api</name>
