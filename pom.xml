@@ -5,7 +5,7 @@
 
 	<groupId>com.esgi</groupId>
 	<artifactId>annual-project-api</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>annual-project-api</name>
@@ -104,7 +104,7 @@
                 </executions>
                 <configuration>
                     <serverId>internal.repo</serverId>
-                    <nexusUrl>http://192.168.2.11:8081/nexus/</nexusUrl>
+                    <nexusUrl>http://fouan.ddns.net:8081/nexus/</nexusUrl>
                     <skipStaging>true</skipStaging>
                 </configuration>
             </plugin>
@@ -115,7 +115,7 @@
 		<repository>
 			<id>internal.repo</id>
 			<!--<name>annual-project-repository</name>-->
-			<url>http://192.168.2.11:8081/nexus/content/repositories/internal.repo</url>
+			<url>http://fouan.ddns.net:8081/nexus/content/repositories/internal.repo</url>
 		</repository>
         <!--
 		<snapshotRepository>
