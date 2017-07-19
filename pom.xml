@@ -110,4 +110,19 @@
             </plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<!--<name>annual-project-repository</name>-->
+			<url>http://fouan.ddns.net:8081/nexus/content/repositories/internal.repo</url>
+		</repository>
+        <!--
+		<snapshotRepository>
+			<id>snapshot.repo</id>
+			<name>Nexus Repository</name>
+			<url>http://fouan.ddns.net:8081</url>
+		</snapshotRepository>
+		-->
+	</distributionManagement>
 </project>
