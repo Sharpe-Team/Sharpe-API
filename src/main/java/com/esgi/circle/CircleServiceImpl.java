@@ -150,8 +150,7 @@ public class CircleServiceImpl implements CircleService {
 
 		if(list.isEmpty()) {
 			// Add a new private circle for the 2 users
-			//return addPrivateCircle(idUser1, idUser2);
-			return null;
+			return addPrivateCircle(idUser1, idUser2);
 		} else {
 			return getCircle(list.get(0).getIdCircle());
 		}
