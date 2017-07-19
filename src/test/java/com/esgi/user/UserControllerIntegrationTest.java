@@ -58,8 +58,8 @@ public class UserControllerIntegrationTest {
 				.body("id", is(1))
 				.body("firstname", is("first"))
 				.body("password", is(""))
-				.body("circlesRole.1", is("USER"))
-				.body("circlesRole.2", is("MODERATOR"));
+				.body("ruc.1", is("USER"))
+				.body("ruc.2", is("MODERATOR"));
 	}
 
 	@Test
@@ -79,8 +79,8 @@ public class UserControllerIntegrationTest {
 				.body("id", is(2))
 				.body("firstname", is("second"))
 				.body("password", is(""))
-				.body("circlesRole.1", is("MODERATOR"))
-				.body("circlesRole.2", is("USER"));
+				.body("ruc.1", is("MODERATOR"))
+				.body("ruc.2", is("USER"));
 	}
 
 	@Test

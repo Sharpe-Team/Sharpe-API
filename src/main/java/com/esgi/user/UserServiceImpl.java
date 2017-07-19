@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 			roleForCircle.put(ruc.getIdCircle(), roleName);
 		}
 
-		userDto.setCirclesRole(roleForCircle);
+		userDto.setRuc(roleForCircle);
 
 		return userDto;
 	}

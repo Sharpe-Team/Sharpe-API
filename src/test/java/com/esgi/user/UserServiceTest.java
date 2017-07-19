@@ -156,9 +156,9 @@ public class UserServiceTest {
 			assertThat(user.getId()).isEqualTo(user2.getId());
 			assertThat(user.getFirstname()).isEqualTo(user2.getFirstname());
 			assertThat(user.getPassword()).isEqualTo("");
-			assertThat(user.getCirclesRole()).isNotNull();
-			assertThat(user.getCirclesRole().size()).isEqualTo(1);
-			assertThat(user.getCirclesRole().get(1L)).isEqualTo(roleEntity.getName());
+			assertThat(user.getRuc()).isNotNull();
+			assertThat(user.getRuc().size()).isEqualTo(1);
+			assertThat(user.getRuc().get(1L)).isEqualTo(roleEntity.getName());
 		} catch (UserNotFoundException e) {
 			fail("Test failed : an unexpected exception has been thrown when trying to retrieve one user with id = " + id);
 		}
@@ -187,9 +187,9 @@ public class UserServiceTest {
 			assertThat(user.getId()).isEqualTo(user3.getId());
 			assertThat(user.getFirstname()).isEqualTo(user3.getFirstname());
 			assertThat(user.getPassword()).isEqualTo("");
-			assertThat(user.getCirclesRole()).isNotNull();
-			assertThat(user.getCirclesRole().size()).isEqualTo(1);
-			assertThat(user.getCirclesRole().get(1L)).isEqualTo(roleEntity.getName());
+			assertThat(user.getRuc()).isNotNull();
+			assertThat(user.getRuc().size()).isEqualTo(1);
+			assertThat(user.getRuc().get(1L)).isEqualTo(roleEntity.getName());
 		} catch (UserNotFoundException e) {
 			fail("Test failed : an unexpected exception has been thrown when trying to retrieve one user with username = '" + username + "'");
 		}
@@ -218,8 +218,8 @@ public class UserServiceTest {
 			user = userService.insertUser(user);
 
 			assertThat(user.getId()).isEqualTo(4);
-			assertThat(user.getCirclesRole()).isNotNull();
-			assertThat(user.getCirclesRole().size()).isEqualTo(0);
+			assertThat(user.getRuc()).isNotNull();
+			assertThat(user.getRuc().size()).isEqualTo(0);
 			verify(userRepository, times(1)).save(any(UserEntity.class));
 		} catch (EmailAddressAlreadyExistsException e) {
 			fail("An unexpected exception has been thrown...");
